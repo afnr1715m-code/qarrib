@@ -215,8 +215,8 @@ def render_customer_bottom_nav(active: str):
             display: flex; flex-direction: column; align-items: center; gap: 2px;
             padding: 4px 0; color: {PALETTE["green_700"]};
         }}
-        .qarrib-bottom-nav-active .qarrib-bn-icon {{
-            font-family: 'Material Symbols Rounded'; font-size: 22px; line-height: 1;
+        .st-key-customer_bottom_nav .qarrib-bottom-nav-active .qarrib-bn-icon {{
+            font-family: 'Material Symbols Rounded' !important; font-size: 22px; line-height: 1;
         }}
         .qarrib-bottom-nav-active .qarrib-bn-label {{
             font-size: 11px; font-weight: 700;
@@ -458,10 +458,10 @@ def apply_home_theme():
         @media (prefers-reduced-motion: reduce) {
             .qarrib-route-dot { animation: none; offset-distance: 50%; }
         }
-        .qarrib-route-node {
+        .qarrib-route-card .qarrib-route-node {
             position: absolute; width: 56px; height: 56px; border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Material Symbols Rounded'; font-size: 24px; color: #2E4B12;
+            font-family: 'Material Symbols Rounded' !important; font-size: 24px; color: #2E4B12;
         }
         .qarrib-route-node.kitchen { top: 0; right: 0; background: #EAF3DE; }
         .qarrib-route-node.home { bottom: 0; left: 0; background: #FBEBD2; }
