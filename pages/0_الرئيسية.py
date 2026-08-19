@@ -196,50 +196,44 @@ if role is None:
     st.markdown(f'<div class="qarrib-footer-tagline">{html.escape(t("landing_footer_tagline"))}</div>', unsafe_allow_html=True)
     st.divider()
 
-# صف الترحيب ("أهلاً" + سؤال) + أيقونة حساب مضغوطة (popover) يمين —
-# بالضبط ترتيب الموك-أب: تحية شخصية بدل شعار التطبيق، وأيقونة حساب
-# صغيرة بجنبها مو عمود جانبي كامل. الزبون ما يحتاج هذي الأيقونة أصلاً —
-# شريط التنقل السفلي عنده فيه تبويب "حسابي" مخصص لنفس الغرض بالضبط، فتكرارها
-# هنا زيادة بلا داعي (render_customer_bottom_nav تحت)
-if role == "customer":
-    st.caption(t("home_greeting_hello"))
-    st.subheader(t("home_greeting_question"))
-    st.caption(t("home_welcome_role").format(role=role_label(role)))
-else:
-    greet_col, account_col = st.columns([5, 1])
+# صف الترحيب + أيقونة الحساب + شريط البحث/الفلاتر + البانر الزخرفي —
+# نعرضها بس للمسجلين دخولهم (بائعة/مندوب/زبون). الزوار الجدد (role is
+# None) صفحة الهبوط فوق تغطي نفس الغرض بالضبط (ترحيب + دخول + تسجيل)،
+# فتكرارها هنا كان يعطي إحساس بصفحتين متلاصقتين — يوصلون مباشرة لعرض
+# الأسر (نفس اللي كان يوديهم له زر "تصفحي الأسر واطلبي" بالهيرو أصلاً)
+search_query = ""
+selected_type = t("filter_all")
+sort_by = "default"
 
-    with greet_col:
+if role is not None:
+    if role == "customer":
         st.caption(t("home_greeting_hello"))
         st.subheader(t("home_greeting_question"))
-        if role is not None:
+        st.caption(t("home_welcome_role").format(role=role_label(role)))
+    else:
+        greet_col, account_col = st.columns([5, 1])
+
+        with greet_col:
+            st.caption(t("home_greeting_hello"))
+            st.subheader(t("home_greeting_question"))
             st.caption(t("home_welcome_role").format(role=role_label(role)))
 
-    with account_col:
-        # بدون تسمية نصية وبدون تمديد العرض — يطلع زر دائري مضغوط فيه
-        # الأيقونة بس، أقرب لشكل أيقونة الحساب الصغيرة بأعلى يمين الموك-أب
-        with st.popover(" ", icon=":material/account_circle:", help=t("home_account_menu")):
-            if role is None:
-                st.page_link("pages/1_تسجيل_الدخول.py", label=t("nav_login"), icon=":material/login:")
-                st.caption(t("home_new_account"))
-                st.page_link("pages/7_تسجيل_أسرة.py", label=t("home_register_seller_link"), icon=":material/storefront:")
-                st.page_link("pages/3_تسجيل_مندوب.py", label=t("home_register_courier_link"), icon=":material/moped:")
-                st.page_link("pages/8_تسجيل_زبون.py", label=t("home_register_customer_link"), icon=":material/person_add:")
-            elif role == "seller":
-                st.page_link("pages/5_طلبات_الأسرة.py", label=t("nav_my_orders"), icon=":material/receipt_long:")
-                st.page_link("pages/10_قائمة_المنتجات.py", label=t("nav_product_menu"), icon=":material/restaurant_menu:")
-                st.page_link("pages/15_إعدادات_الأسرة.py", label=t("nav_settings"), icon=":material/settings:")
-            elif role == "courier":
-                st.page_link("pages/4_لوحة_المندوب.py", label=t("courier_dashboard_title"), icon=":material/local_shipping:")
+        with account_col:
+            # بدون تسمية نصية وبدون تمديد العرض — يطلع زر دائري مضغوط فيه
+            # الأيقونة بس، أقرب لشكل أيقونة الحساب الصغيرة بأعلى يمين الموك-أب
+            with st.popover(" ", icon=":material/account_circle:", help=t("home_account_menu")):
+                if role == "seller":
+                    st.page_link("pages/5_طلبات_الأسرة.py", label=t("nav_my_orders"), icon=":material/receipt_long:")
+                    st.page_link("pages/10_قائمة_المنتجات.py", label=t("nav_product_menu"), icon=":material/restaurant_menu:")
+                    st.page_link("pages/15_إعدادات_الأسرة.py", label=t("nav_settings"), icon=":material/settings:")
+                elif role == "courier":
+                    st.page_link("pages/4_لوحة_المندوب.py", label=t("courier_dashboard_title"), icon=":material/local_shipping:")
 
-# مرساة (anchor) يوصلها زر "تصفحي الأسر المتوفرة" بالهيرو أعلاه (رابط
+# مرساة (anchor) يوصلها زر "تصفحي الأسر واطلبي" بالهيرو أعلاه (رابط
 # #qarrib-browse-anchor عادي بـ HTML — بدون جافاسكربت إضافي)
 st.markdown('<div id="qarrib-browse-anchor"></div>', unsafe_allow_html=True)
 
-# شريط بحث + رقاقات فرز — يجيان مباشرة تحت الترحية زي الموك-أب، قبل
-# البانر مو بعده
-search_query = ""
-selected_type = t("filter_all")
-if sellers:
+if role is not None and sellers:
     search_query = st.text_input(
         t("home_search_placeholder"),
         label_visibility="collapsed",
@@ -293,16 +287,17 @@ if sellers:
             format_func=lambda opt: f":material/{SORT_ICON.get(opt, 'tune')}: {t(f'sort_{opt}')}",
         )
 
-# بانر ترحيبي زخرفي (زي بانر الموك-أب) — بس عرض، مالوش وظيفة تفاعلية
-st.markdown(
-    f"""
-    <div class="qarrib-banner">
-        <h3>{html.escape(t('home_banner_title'))}</h3>
-        <p>{html.escape(t('home_banner_subtitle'))}</p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+if role is not None:
+    # بانر ترحيبي زخرفي (زي بانر الموك-أب) — بس عرض، مالوش وظيفة تفاعلية
+    st.markdown(
+        f"""
+        <div class="qarrib-banner">
+            <h3>{html.escape(t('home_banner_title'))}</h3>
+            <p>{html.escape(t('home_banner_subtitle'))}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 if not sellers:
     st.info(t("home_no_sellers_found"))
