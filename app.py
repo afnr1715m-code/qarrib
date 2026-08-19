@@ -56,7 +56,11 @@ elif role == "courier":
     ]
 elif role == "customer":
     # عنوان القسم بالقائمة الجانبية يصير اسم الزبون نفسه بدل تسمية عامة
-    # ("الزبون") — يعطي إحساس شخصي أكثر
+    # ("الزبون") — يعطي إحساس شخصي أكثر. القائمة الجانبية نفسها مخفية عن
+    # الزبون (position="hidden" تحت) واستبدلناها بشريط تنقّل سفلي بأيقونات
+    # (render_customer_bottom_nav بملف ui_helpers.py) — أقرب لتجربة تطبيقات
+    # الجوال المطلوبة. الصفحات هنا لسا مسجّلة عادي عشان st.switch_page /
+    # st.page_link يشتغلوا، بس بدون ما تظهر بالقائمة الجانبية.
     customer_rows = get_client().table("customers").select("name").eq("user_id", st.session_state["user_id"]).execute().data
     section_title = customer_rows[0]["name"] if customer_rows else t("nav_section_customer")
     pages[section_title] = [
@@ -65,5 +69,6 @@ elif role == "customer":
         st.Page("pages/13_الملف_الشخصي.py", title=t("nav_profile"), icon=":material/person:"),
     ]
 
-navigation = st.navigation(pages)
+nav_position = "hidden" if role == "customer" else "sidebar"
+navigation = st.navigation(pages, position=nav_position)
 navigation.run()

@@ -15,7 +15,7 @@ from collections import Counter
 import streamlit as st
 from db import get_client
 from auth_helpers import current_role, role_label, render_logout_button
-from ui_helpers import apply_rtl, apply_home_theme, category_label, render_language_switcher, t, PRODUCT_CATEGORIES
+from ui_helpers import apply_rtl, apply_home_theme, category_label, render_customer_bottom_nav, render_language_switcher, t, PRODUCT_CATEGORIES
 
 st.set_page_config(page_title=t("app_name"), page_icon=":material/home:")
 apply_rtl()
@@ -24,6 +24,9 @@ render_language_switcher()
 render_logout_button()
 
 role = current_role()
+
+if role == "customer":
+    render_customer_bottom_nav(active="home")
 
 supabase = get_client()
 sellers = supabase.table("sellers").select("*").execute().data

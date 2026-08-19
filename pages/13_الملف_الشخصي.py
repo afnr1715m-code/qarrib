@@ -16,7 +16,7 @@ import streamlit as st
 from db import get_client
 from auth_helpers import require_login, render_logout_button
 from location_helpers import render_location_picker
-from ui_helpers import apply_rtl, render_language_switcher, render_page_title, t
+from ui_helpers import apply_rtl, render_customer_bottom_nav, render_language_switcher, render_page_title, t
 from gotrue.errors import AuthApiError
 
 st.set_page_config(page_title=f"{t('app_name')} | {t('profile_title')}", page_icon=":material/person:")
@@ -28,6 +28,7 @@ render_page_title("person", t("profile_title"), role="customer")
 st.caption(t("profile_caption"))
 
 require_login("customer")
+render_customer_bottom_nav(active="profile")
 
 supabase = get_client()
 

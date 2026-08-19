@@ -171,6 +171,74 @@ def render_page_title(icon_name: str, text: str, role=None):
     )
 
 
+# شريط تنقّل سفلي بأيقونات (زي تطبيقات الجوال) بدل القائمة الجانبية
+# الافتراضية — يُستخدم لصفحات الزبون الأربعة بس (الرئيسية/الطلبات/السلة/
+# الملف الشخصي). كل عنصر: (مفتاح نشط، مسار الصفحة، مفتاح ترجمة التسمية،
+# اسم أيقونة Material). العنصر النشط نعرضه كنص ملوّن ثابت (مو رابط) عشان
+# نضمن لون تمييز واضح بدون الاعتماد على تلوين Streamlit الداخلي للصفحة
+# الحالية (خافت وغير مضمون الشكل).
+CUSTOMER_BOTTOM_NAV_ITEMS = [
+    ("home", "pages/0_الرئيسية.py", "nav_home", "home"),
+    ("orders", "pages/9_طلبات_الزبون.py", "nav_my_orders", "receipt_long"),
+    ("cart", "pages/11_السلة.py", "nav_cart", "shopping_cart"),
+    ("profile", "pages/13_الملف_الشخصي.py", "nav_profile", "account_circle"),
+]
+
+
+def render_customer_bottom_nav(active: str):
+    st.markdown(
+        f"""
+        <style>
+        .st-key-customer_bottom_nav {{
+            position: fixed; left: 0; right: 0; bottom: 0; z-index: 999;
+            background: {PALETTE["card"]}; border-top: 1px solid {PALETTE["line"]};
+            padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+        }}
+        .st-key-customer_bottom_nav [data-testid="stPageLink-NavLink"] {{
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            padding: 4px 0; border-radius: 10px; width: 100%; background: transparent;
+        }}
+        .st-key-customer_bottom_nav [data-testid="stPageLink-NavLink"] p {{
+            margin: 0; font-size: 11px; color: {PALETTE["muted"]};
+        }}
+        .st-key-customer_bottom_nav [data-testid="stIconMaterial"] {{
+            color: {PALETTE["muted"]} !important;
+        }}
+        .qarrib-bottom-nav-active {{
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            padding: 4px 0; color: {PALETTE["green_700"]};
+        }}
+        .qarrib-bottom-nav-active .qarrib-bn-icon {{
+            font-family: 'Material Symbols Rounded'; font-size: 22px; line-height: 1;
+        }}
+        .qarrib-bottom-nav-active .qarrib-bn-label {{
+            font-size: 11px; font-weight: 700;
+        }}
+        div[data-testid="stAppViewContainer"] .block-container {{
+            padding-bottom: 76px;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    with st.container(key="customer_bottom_nav"):
+        cols = st.columns(4)
+        for col, (key, path, label_key, icon_name) in zip(cols, CUSTOMER_BOTTOM_NAV_ITEMS):
+            with col:
+                if key == active:
+                    codepoint = MATERIAL_ICON_CODEPOINTS[icon_name]
+                    st.markdown(
+                        f'<div class="qarrib-bottom-nav-active">'
+                        f'<span class="qarrib-bn-icon">&#x{codepoint:x};</span>'
+                        f'<span class="qarrib-bn-label">{html.escape(t(label_key))}</span>'
+                        f'</div>',
+                        unsafe_allow_html=True,
+                    )
+                else:
+                    st.page_link(path, label=t(label_key), icon=f":material/{icon_name}:")
+
+
 def apply_rtl():
     is_rtl = get_lang() in RTL_LANGUAGES
     direction = "rtl" if is_rtl else "ltr"

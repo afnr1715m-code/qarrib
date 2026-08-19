@@ -18,7 +18,7 @@ import streamlit as st
 from db import get_client
 from auth_helpers import require_login, render_logout_button
 from courier_assignment import assign_next_courier
-from ui_helpers import apply_rtl, category_label, render_language_switcher, render_page_title, t, format_price
+from ui_helpers import apply_rtl, category_label, render_customer_bottom_nav, render_language_switcher, render_page_title, t, format_price
 
 st.set_page_config(page_title=f"{t('app_name')} | {t('cart_page_title')}", page_icon=":material/shopping_cart:")
 apply_rtl()
@@ -29,6 +29,7 @@ render_page_title("shopping_cart", t("cart_page_title"), role="customer")
 st.caption(t("cart_page_caption"))
 
 require_login("customer")
+render_customer_bottom_nav(active="cart")
 
 supabase = get_client()
 
