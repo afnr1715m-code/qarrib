@@ -91,3 +91,20 @@ def render_logout_button():
         if st.sidebar.button(t("btn_logout"), icon=":material/logout:", key="sidebar_logout_btn"):
             sign_out(get_client())
             st.rerun()
+
+
+def render_inline_logout_button():
+    """
+    نسخة من زر تسجيل الخروج بدون قائمة جانبية — أيقونة مضغوطة بس بأعلى
+    الصفحة نفسها. تُستخدم بصفحات الزبون الأربعة (القائمة الجانبية مخفية
+    عنها كلياً — position="hidden" بـ app.py — فما نقدر نحط الزر بالسايدبار
+    زي باقي الصفحات).
+    """
+    if is_logged_in():
+        from db import get_client
+
+        col_spacer, col_btn = st.columns([8, 1])
+        with col_btn:
+            if st.button(" ", icon=":material/logout:", key="inline_logout_btn", help=t("btn_logout")):
+                sign_out(get_client())
+                st.rerun()

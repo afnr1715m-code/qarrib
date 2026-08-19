@@ -126,7 +126,7 @@ def t(key: str) -> str:
     return TRANSLATIONS.get(get_lang(), TRANSLATIONS["ar"]).get(key, key)
 
 
-def render_language_switcher():
+def render_language_switcher(location: str = "sidebar"):
     """
     عنصر تبديل اللغة. ما نربطه مباشرة بـ session_state["lang"] عبر key=
     لأن صفحة app.py (اللي تبني قائمة التنقل بالقائمة الجانبية) تقرأ اللغة
@@ -134,15 +134,21 @@ def render_language_switcher():
     القائمة الجانبية تضل متأخرة "دورة واحدة" عن اللغة المختارة فعلياً.
     فبدالها: نقارن يدوياً، ولو تغيرت، نحفظ ونعمل st.rerun() فوري عشان كل
     شي (بما فيه القائمة الجانبية) يتحدث بنفس اللحظة.
+
+    location: "sidebar" (افتراضي، لكل الصفحات) أو "inline" — للزبون، اللي
+    ما عنده قائمة جانبية أصلاً (مخفية بـ app.py)، فنعرضه بالمتن العادي
+    بصفحة "الملف الشخصي" بدل السايدبار.
     """
     codes = list(LANGUAGE_NAMES.keys())
     current = get_lang()
+    target = st.sidebar if location == "sidebar" else st
 
-    selected = st.sidebar.selectbox(
+    selected = target.selectbox(
         t("lang_switcher_label"),
         codes,
         index=codes.index(current),
         format_func=lambda code: LANGUAGE_NAMES[code],
+        key=f"lang_switcher_{location}",
     )
 
     if selected != current:

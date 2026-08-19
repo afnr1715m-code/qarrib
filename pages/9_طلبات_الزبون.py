@@ -9,14 +9,13 @@
 import html
 import streamlit as st
 from db import get_client
-from auth_helpers import require_login, render_logout_button
-from ui_helpers import apply_rtl, apply_orders_theme, render_customer_bottom_nav, render_language_switcher, render_page_title, t, format_price
+from auth_helpers import require_login, render_inline_logout_button
+from ui_helpers import apply_rtl, apply_orders_theme, render_customer_bottom_nav, render_page_title, t, format_price
 
 st.set_page_config(page_title=f"{t('app_name')} | {t('customer_orders_title')}", page_icon=":material/receipt_long:")
 apply_rtl()
 apply_orders_theme()
-render_language_switcher()
-render_logout_button()
+render_inline_logout_button()
 
 render_page_title("receipt_long", t("customer_orders_title"), role="customer")
 st.caption(t("customer_orders_caption"))

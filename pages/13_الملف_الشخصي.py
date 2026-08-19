@@ -14,15 +14,14 @@
 
 import streamlit as st
 from db import get_client
-from auth_helpers import require_login, render_logout_button
+from auth_helpers import require_login, render_inline_logout_button
 from location_helpers import render_location_picker
 from ui_helpers import apply_rtl, render_customer_bottom_nav, render_language_switcher, render_page_title, t
 from gotrue.errors import AuthApiError
 
 st.set_page_config(page_title=f"{t('app_name')} | {t('profile_title')}", page_icon=":material/person:")
 apply_rtl()
-render_language_switcher()
-render_logout_button()
+render_inline_logout_button()
 
 render_page_title("person", t("profile_title"), role="customer")
 st.caption(t("profile_caption"))
@@ -125,3 +124,9 @@ if submitted_password:
             st.error(t("err_save_generic").format(e=e))
         except Exception as e:
             st.error(t("err_save_generic").format(e=e))
+
+st.divider()
+
+# مبدّل اللغة نقله هنا (بدل القائمة الجانبية) — الزبون ما عنده قائمة
+# جانبية أصلاً، وهذي الصفحة أقرب صفحة لمفهوم "الإعدادات" عنده
+render_language_switcher(location="inline")
