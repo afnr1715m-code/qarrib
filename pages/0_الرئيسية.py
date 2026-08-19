@@ -15,7 +15,7 @@ from collections import Counter
 import streamlit as st
 from db import get_client
 from auth_helpers import current_role, role_label, render_logout_button, render_inline_logout_button
-from ui_helpers import apply_rtl, apply_home_theme, category_label, render_customer_bottom_nav, render_language_switcher, t, PRODUCT_CATEGORIES
+from ui_helpers import apply_rtl, apply_home_theme, category_label, MATERIAL_ICON_CODEPOINTS, render_customer_bottom_nav, render_language_switcher, t, PRODUCT_CATEGORIES
 
 st.set_page_config(page_title=t("app_name"), page_icon=":material/home:")
 apply_rtl()
@@ -35,6 +35,51 @@ else:
 supabase = get_client()
 sellers = supabase.table("sellers").select("*").execute().data
 product_types = sorted({s["product_type"] for s in sellers}) if sellers else []
+
+# صفحة هبوط للزوار الجدد غير المسجلين بس (role is None) — هيرو + قسم "كيف
+# يشتغل قرّب؟" بثلاث بطاقات أدوار، فوق شبكة تصفح الأسر العادية اللي تكمل
+# تحتها. المسجلين دخولهم (أسرة/مندوب/زبون) ما يشوفون هذا القسم — يوصلهم
+# مباشرة لصف الترحيب وتصفح الأسر زي المعتاد
+if role is None:
+    st.markdown(
+        f"""
+        <div class="qarrib-hero">
+            <span class="qarrib-hero-badge">{html.escape(t('app_name'))}</span>
+            <h1>{html.escape(t('landing_hero_title'))}</h1>
+            <p>{html.escape(t('landing_hero_subtitle'))}</p>
+            <a class="qarrib-hero-btn" href="#qarrib-browse-anchor">{html.escape(t('landing_hero_cta_browse'))}</a>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        f'<div class="qarrib-how-title">{html.escape(t("landing_how_title"))}</div>',
+        unsafe_allow_html=True,
+    )
+
+    LANDING_ROLE_CARDS = [
+        ("storefront", "home_register_seller_link", "landing_role_seller_desc", "pages/7_تسجيل_أسرة.py"),
+        ("moped", "home_register_courier_link", "landing_role_courier_desc", "pages/3_تسجيل_مندوب.py"),
+        ("person_add", "home_register_customer_link", "landing_role_customer_desc", "pages/8_تسجيل_زبون.py"),
+    ]
+    role_cols = st.columns(3)
+    for role_col, (icon_name, title_key, desc_key, target_page) in zip(role_cols, LANDING_ROLE_CARDS):
+        with role_col:
+            codepoint = MATERIAL_ICON_CODEPOINTS[icon_name]
+            st.markdown(
+                f"""
+                <div class="qarrib-role-card">
+                    <div class="qarrib-role-icon">&#x{codepoint:x};</div>
+                    <h4>{html.escape(t(title_key))}</h4>
+                    <p>{html.escape(t(desc_key))}</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            st.page_link(target_page, label=t("btn_register"), icon=f":material/{icon_name}:", use_container_width=True)
+
+    st.divider()
 
 # صف الترحيب ("أهلاً" + سؤال) + أيقونة حساب مضغوطة (popover) يمين —
 # بالضبط ترتيب الموك-أب: تحية شخصية بدل شعار التطبيق، وأيقونة حساب
@@ -70,6 +115,10 @@ else:
                 st.page_link("pages/15_إعدادات_الأسرة.py", label=t("nav_settings"), icon=":material/settings:")
             elif role == "courier":
                 st.page_link("pages/4_لوحة_المندوب.py", label=t("courier_dashboard_title"), icon=":material/local_shipping:")
+
+# مرساة (anchor) يوصلها زر "تصفحي الأسر المتوفرة" بالهيرو أعلاه (رابط
+# #qarrib-browse-anchor عادي بـ HTML — بدون جافاسكربت إضافي)
+st.markdown('<div id="qarrib-browse-anchor"></div>', unsafe_allow_html=True)
 
 # شريط بحث + رقاقات فرز — يجيان مباشرة تحت الترحية زي الموك-أب، قبل
 # البانر مو بعده

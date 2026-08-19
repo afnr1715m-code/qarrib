@@ -403,6 +403,59 @@ def apply_home_theme():
             margin-top: 6px;
         }
 
+        /* صفحة الهبوط (للزوار غير المسجلين بس) — هيرو كبير + قسم "كيف
+           يشتغل قرّب" بثلاث بطاقات أدوار (أسرة/مندوب/زبون) */
+        .qarrib-hero {
+            background: linear-gradient(150deg, #2E4B12, #5A8F2A 55%, #7CB342);
+            border-radius: 26px;
+            padding: 44px 28px;
+            text-align: center;
+            color: #FBF8F1;
+            margin-bottom: 8px;
+            box-shadow: 0 16px 34px rgba(46, 75, 18, 0.3);
+        }
+        .qarrib-hero .qarrib-hero-badge {
+            display: inline-block; font-size: 13px; font-weight: 800;
+            background: rgba(255,255,255,0.15); padding: 5px 16px;
+            border-radius: 100px; margin-bottom: 14px;
+        }
+        .qarrib-hero h1 {
+            margin: 0 0 12px 0; font-size: 30px; font-weight: 900; color: #FBF8F1 !important;
+            line-height: 1.35;
+        }
+        .qarrib-hero p {
+            margin: 0 auto; max-width: 480px; font-size: 14.5px; opacity: 0.95; line-height: 1.7;
+        }
+
+        .qarrib-how-title {
+            text-align: center; font-size: 19px; font-weight: 900; color: #2E4B12;
+            margin: 30px 0 18px 0;
+        }
+        .qarrib-role-card {
+            background: #FFFFFF;
+            border: 1px solid #E8E2D2;
+            border-radius: 18px;
+            padding: 22px 16px;
+            text-align: center;
+            height: 100%;
+            box-shadow: 0 10px 30px -12px rgba(46, 75, 18, 0.18);
+        }
+        .qarrib-role-icon {
+            width: 52px; height: 52px; border-radius: 16px;
+            background: #EAF3DE; color: #2E4B12;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 12px;
+            font-family: 'Material Symbols Rounded'; font-size: 26px;
+        }
+        .qarrib-role-card h4 { font-size: 15px; font-weight: 800; margin: 0 0 6px 0; color: #2E4B12; }
+        .qarrib-role-card p { font-size: 12.5px; color: #7A7768; margin: 0 0 14px 0; line-height: 1.6; }
+        .qarrib-hero-btn {
+            display: inline-block; background: #FBF8F1; color: #2E4B12 !important;
+            padding: 10px 28px; border-radius: 100px; font-weight: 800; font-size: 14px;
+            margin-top: 18px; text-decoration: none !important;
+        }
+        .qarrib-hero-btn:hover { opacity: 0.9; }
+
         /* شكل رقاقات الفرز (تصنيف المنتج + الترتيب) — نستهدفها فقط عبر
            كلاس "st-key-..." اللي يضيفه Streamlit تلقائياً لأي
            st.container(key=...) (ميزة رسمية موثقة)، بدل استهداف كل زر
