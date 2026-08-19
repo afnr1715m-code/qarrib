@@ -49,33 +49,12 @@ ROLE_TITLE_COLORS = {
     "customer": PALETTE["green_900"],
 }
 
-# خط أيقونات Material Symbols ما يشتغل باللقب النصي للأيقونة (زي "home") —
-# هذا خط icon font يحتوي رموز فقط بنقاط Unicode خاصة (Private Use Area)،
-# مو أحرف لاتينية عادية، فكتابة "home" كنص حرفي بس يفشل ويطلع بخط احتياطي
-# عادي (بالضبط المشكلة اللي كنا نشوفها). استخرجنا نقاط الترميز هذي مباشرة
-# من ملف الخط الفعلي المستخدم بمكتبة Streamlit المثبتة (MaterialSymbols-
-# Rounded.woff2) عبر fontTools، فهي مضمونة تطابق هذي النسخة بالضبط.
-MATERIAL_ICON_CODEPOINTS = {
-    "home": 0xE88A,
-    "login": 0xEA77,
-    "logout": 0xE9BA,
-    "receipt_long": 0xEF6E,
-    "storefront": 0xEA12,
-    "moped": 0xEA72,
-    "toggle_on": 0xE9F6,
-    "local_shipping": 0xE558,
-    "shopping_bag": 0xF1CC,
-    "shopping_cart": 0xE547,
-    "payments": 0xEF63,
-    "person_add": 0xE7FE,
-    "restaurant_menu": 0xE556,
-    "account_circle": 0xE853,
-    "search": 0xE8B6,
-    "task_alt": 0xE2E6,
-    "delete": 0xE872,
-    "add_shopping_cart": 0xE854,
-    "app_registration": 0xEF40,
-}
+# ملاحظة مهمة: جربنا أكثر من مرة عرض أيقونات Material Symbols كنص Unicode
+# خام (codepoint) بمحتوى HTML مخصص (خارج معامل icon= الرسمي لعناصر
+# st.button/page_link/popover/pills) — بعناوين الصفحات، وبعدها بصفحة
+# الهبوط وشريط التنقل السفلي — وكل مرة طلعت النتيجة غير موثوقة (مربعات
+# فاضية ☐ بدل الرمز). القاعدة صارت: أيقونات Material فقط عبر icon=
+# بالعناصر الرسمية، ولأي عنصر HTML مخصص نستخدم إيموجي عادية بدلها.
 
 # تصنيفات نوع المنتجات — قائمة ثابتة (رموز إنجليزية) نخزنها بعمود
 # sellers.product_type بدل ما نخلي الأسرة تكتب نص حر عند التسجيل. الرمز
@@ -190,6 +169,18 @@ CUSTOMER_BOTTOM_NAV_ITEMS = [
     ("profile", "pages/13_الملف_الشخصي.py", "nav_profile", "account_circle"),
 ]
 
+# العنصر النشط نعرضه كنص/HTML خام (مو st.page_link) عشان نلوّنه بلون واضح
+# ثابت — بس رمز Material Symbols كـ Unicode codepoint بمحتوى HTML خام غير
+# موثوق العرض (نفس العلة اللي واجهناها بعناوين الصفحات، تطلع مربعات فاضية)،
+# فنستخدم إيموجي بسيطة بدلها هنا بس (العناصر غير النشطة تستمر تستخدم
+# icon= الرسمية بـ st.page_link اللي مضمونة الشغل)
+_BOTTOM_NAV_ACTIVE_EMOJI = {
+    "home": "🏠",
+    "receipt_long": "🧾",
+    "shopping_cart": "🛒",
+    "account_circle": "👤",
+}
+
 
 def render_customer_bottom_nav(active: str):
     st.markdown(
@@ -215,8 +206,8 @@ def render_customer_bottom_nav(active: str):
             display: flex; flex-direction: column; align-items: center; gap: 2px;
             padding: 4px 0; color: {PALETTE["green_700"]};
         }}
-        .st-key-customer_bottom_nav .qarrib-bottom-nav-active .qarrib-bn-icon {{
-            font-family: 'Material Symbols Rounded' !important; font-size: 22px; line-height: 1;
+        .qarrib-bottom-nav-active .qarrib-bn-icon {{
+            font-size: 20px; line-height: 1;
         }}
         .qarrib-bottom-nav-active .qarrib-bn-label {{
             font-size: 11px; font-weight: 700;
@@ -233,10 +224,10 @@ def render_customer_bottom_nav(active: str):
         for col, (key, path, label_key, icon_name) in zip(cols, CUSTOMER_BOTTOM_NAV_ITEMS):
             with col:
                 if key == active:
-                    codepoint = MATERIAL_ICON_CODEPOINTS[icon_name]
+                    emoji = _BOTTOM_NAV_ACTIVE_EMOJI[icon_name]
                     st.markdown(
                         f'<div class="qarrib-bottom-nav-active">'
-                        f'<span class="qarrib-bn-icon">&#x{codepoint:x};</span>'
+                        f'<span class="qarrib-bn-icon">{emoji}</span>'
                         f'<span class="qarrib-bn-label">{html.escape(t(label_key))}</span>'
                         f'</div>',
                         unsafe_allow_html=True,

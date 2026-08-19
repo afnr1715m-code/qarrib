@@ -15,7 +15,7 @@ from collections import Counter
 import streamlit as st
 from db import get_client
 from auth_helpers import current_role, role_label, render_logout_button, render_inline_logout_button
-from ui_helpers import apply_rtl, apply_home_theme, category_label, MATERIAL_ICON_CODEPOINTS, render_customer_bottom_nav, render_language_switcher, t, PRODUCT_CATEGORIES
+from ui_helpers import apply_rtl, apply_home_theme, category_label, render_customer_bottom_nav, render_language_switcher, t, PRODUCT_CATEGORIES
 
 st.set_page_config(page_title=t("app_name"), page_icon=":material/home:")
 apply_rtl()
@@ -65,8 +65,11 @@ if role is None:
             )
 
     with route_col:
-        kitchen_cp = MATERIAL_ICON_CODEPOINTS["storefront"]
-        home_cp = MATERIAL_ICON_CODEPOINTS["home"]
+        # استخدمنا قبل كذا محاولات لعرض أيقونات Material كنص Unicode
+        # (codepoint) بمحتوى HTML خام، وكلها طلعت غير موثوقة (مربعات فاضية
+        # ☐) — نفس العلة اللي واجهناها سابقاً بعناوين الصفحات وانحلت وقتها
+        # بالتخلي عن الأيقونة كلياً. هنا بدالها نستخدم إيموجي بسيطة (مضمونة
+        # العرض بأي متصفح) بدل محاولة إصلاح خط الأيقونات من جديد
         st.markdown(
             f"""
             <div class="qarrib-route-card">
@@ -76,9 +79,9 @@ if role is None:
                         <path d="M 270 30 C 160 30, 110 175, 30 175" stroke="#E8E2D2" stroke-width="3" stroke-dasharray="6 7" stroke-linecap="round"/>
                     </svg>
                     <div class="qarrib-route-dot"></div>
-                    <div class="qarrib-route-node kitchen">&#x{kitchen_cp:x};</div>
+                    <div class="qarrib-route-node kitchen">🍳</div>
                     <span class="qarrib-route-caption kitchen">{html.escape(t('landing_route_kitchen_label'))}</span>
-                    <div class="qarrib-route-node home">&#x{home_cp:x};</div>
+                    <div class="qarrib-route-node home">🏠</div>
                     <span class="qarrib-route-caption home">{html.escape(t('landing_route_home_label'))}</span>
                     <span class="qarrib-route-label">{html.escape(t('landing_route_courier_label'))}</span>
                 </div>
