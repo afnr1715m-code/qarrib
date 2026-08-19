@@ -403,58 +403,146 @@ def apply_home_theme():
             margin-top: 6px;
         }
 
-        /* صفحة الهبوط (للزوار غير المسجلين بس) — هيرو كبير + قسم "كيف
-           يشتغل قرّب" بثلاث بطاقات أدوار (أسرة/مندوب/زبون) */
-        .qarrib-hero {
-            background: linear-gradient(150deg, #2E4B12, #5A8F2A 55%, #7CB342);
-            border-radius: 26px;
-            padding: 44px 28px;
-            text-align: center;
-            color: #FBF8F1;
-            margin-bottom: 8px;
-            box-shadow: 0 16px 34px rgba(46, 75, 18, 0.3);
+        /* صفحة الهبوط (للزوار غير المسجلين بس) — مبنية على موك-أب مفصّل
+           بعثته المستخدمة (هيرو + بطاقة "رحلة الطلب" المتحركة + خطوات +
+           بطاقات أدوار + عرض الأسر المسجلة + دعوة تسجيل). الألوان معاد
+           ربطها بمتغيرات PALETTE الموحّدة بدل قيم الموك-أب الخام، عشان
+           تبقى موحّدة مع باقي التطبيق */
+        .qarrib-eyebrow {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: #FBEBD2; color: #8A5A16;
+            padding: 6px 15px; border-radius: 100px; font-size: 12.5px; font-weight: 800;
+            margin-bottom: 16px;
         }
-        .qarrib-hero .qarrib-hero-badge {
-            display: inline-block; font-size: 13px; font-weight: 800;
-            background: rgba(255,255,255,0.15); padding: 5px 16px;
-            border-radius: 100px; margin-bottom: 14px;
+        .qarrib-hero {
+            padding: 8px 0 20px 0;
         }
         .qarrib-hero h1 {
-            margin: 0 0 12px 0; font-size: 30px; font-weight: 900; color: #FBF8F1 !important;
-            line-height: 1.35;
+            font-size: 27px; font-weight: 900; line-height: 1.4; color: #2E4B12 !important;
+            margin: 0 0 14px 0;
         }
-        .qarrib-hero p {
-            margin: 0 auto; max-width: 480px; font-size: 14.5px; opacity: 0.95; line-height: 1.7;
+        .qarrib-hero h1 .hl { color: #D9942F; }
+        .qarrib-hero .lead {
+            font-size: 14px; color: #7A7768; line-height: 1.75; margin-bottom: 6px; max-width: 440px;
+        }
+        .qarrib-hero-btn {
+            display: inline-block; background: #7CB342; color: #FFFFFF !important;
+            padding: 11px 26px; border-radius: 100px; font-weight: 800; font-size: 13.5px;
+            margin-top: 16px; text-decoration: none !important;
+            box-shadow: 0 5px 0 #2E4B12;
+        }
+        .qarrib-hero-btn:hover { transform: translateY(-2px); }
+
+        .qarrib-route-card {
+            background: #FFFFFF; border: 1px solid #E8E2D2; border-radius: 22px;
+            padding: 22px 20px; box-shadow: 0 16px 36px -16px rgba(46, 75, 18, 0.3);
+        }
+        .qarrib-route-card .title {
+            font-family: 'Cairo', sans-serif; font-weight: 800; color: #2E4B12; font-size: 14.5px;
+            margin-bottom: 14px; display: block;
+        }
+        .qarrib-route-path { position: relative; height: 210px; }
+        .qarrib-route-svg { position: absolute; inset: 0; }
+        .qarrib-route-dot {
+            position: absolute; width: 13px; height: 13px; border-radius: 50%;
+            background: #D9942F; box-shadow: 0 0 0 5px #FBEBD2;
+            offset-path: path('M 270 30 C 160 30, 110 175, 30 175');
+            animation: qarrib-travel 3.2s linear infinite;
+        }
+        @keyframes qarrib-travel {
+            0% { offset-distance: 0%; opacity: 0; }
+            8% { opacity: 1; }
+            92% { opacity: 1; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .qarrib-route-dot { animation: none; offset-distance: 50%; }
+        }
+        .qarrib-route-node {
+            position: absolute; width: 56px; height: 56px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Material Symbols Rounded'; font-size: 24px; color: #2E4B12;
+        }
+        .qarrib-route-node.kitchen { top: 0; right: 0; background: #EAF3DE; }
+        .qarrib-route-node.home { bottom: 0; left: 0; background: #FBEBD2; }
+        .qarrib-route-caption {
+            position: absolute; font-size: 11px; font-weight: 700; color: #7A7768; white-space: nowrap;
+        }
+        .qarrib-route-caption.kitchen { top: 62px; right: 0; }
+        .qarrib-route-caption.home { bottom: 62px; left: 0; }
+        .qarrib-route-label {
+            position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%);
+            background: #FBF8F1; border: 1px solid #E8E2D2; border-radius: 100px;
+            padding: 5px 14px; font-size: 11px; font-weight: 800; color: #2E4B12; white-space: nowrap;
         }
 
-        .qarrib-how-title {
-            text-align: center; font-size: 19px; font-weight: 900; color: #2E4B12;
-            margin: 30px 0 18px 0;
+        .qarrib-how-title { text-align: center; font-size: 21px; font-weight: 900; color: #2E4B12; margin: 8px 0 6px 0; }
+        .qarrib-how-subtitle { text-align: center; font-size: 13px; color: #7A7768; max-width: 480px; margin: 0 auto 26px auto; line-height: 1.7; }
+        .qarrib-step {
+            background: #FFFFFF; border: 1px solid #E8E2D2; border-radius: 18px;
+            padding: 22px 18px; height: 100%;
         }
-        .qarrib-role-card {
-            background: #FFFFFF;
-            border: 1px solid #E8E2D2;
-            border-radius: 18px;
-            padding: 22px 16px;
-            text-align: center;
-            height: 100%;
-            box-shadow: 0 10px 30px -12px rgba(46, 75, 18, 0.18);
+        .qarrib-step .num {
+            font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 30px;
+            color: #EAF3DE; -webkit-text-stroke: 1.3px #7CB342; display: block; margin-bottom: 10px;
         }
-        .qarrib-role-icon {
-            width: 52px; height: 52px; border-radius: 16px;
-            background: #EAF3DE; color: #2E4B12;
+        .qarrib-step h4 { font-size: 14.5px; font-weight: 800; margin: 0 0 6px 0; color: #2E4B12; }
+        .qarrib-step p { font-size: 12px; color: #7A7768; margin: 0; line-height: 1.65; }
+
+        .qarrib-audience-card {
+            border-radius: 20px; padding: 26px 22px; height: 100%;
+        }
+        .qarrib-audience-card.dark { background: #2E4B12; color: #FBF8F1; }
+        .qarrib-audience-card.light { background: #FFFFFF; border: 1px solid #E8E2D2; }
+        .qarrib-audience-card h3 { font-size: 17px; font-weight: 800; margin: 0 0 10px 0; }
+        .qarrib-audience-card.dark h3 { color: #FBF8F1 !important; }
+        .qarrib-audience-card.light h3 { color: #2E4B12 !important; }
+        .qarrib-audience-card .desc { font-size: 12.5px; margin-bottom: 16px; line-height: 1.7; }
+        .qarrib-audience-card.dark .desc { opacity: 0.92; }
+        .qarrib-audience-card.light .desc { color: #7A7768; }
+        .qarrib-audience-list { list-style: none; margin: 0 0 18px 0; padding: 0; }
+        .qarrib-audience-list li { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 9px; font-size: 12px; line-height: 1.6; }
+        .qarrib-audience-list li::before { content: "✓"; font-weight: 800; flex-shrink: 0; }
+        .qarrib-audience-card.dark .qarrib-audience-list li::before { color: #A9D477; }
+        .qarrib-audience-card.light .qarrib-audience-list li::before { color: #D9942F; }
+
+        .qarrib-fam-scroll {
+            display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 12px 2px;
+        }
+        .qarrib-fam-card {
+            min-width: 190px; background: #FFFFFF; border: 1px solid #E8E2D2; border-radius: 16px;
+            padding: 18px; flex-shrink: 0;
+        }
+        .qarrib-fam-card .thumb {
+            width: 42px; height: 42px; border-radius: 12px;
+            background: linear-gradient(155deg, #7CB342, #4E7A20); color: #FFFFFF;
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 12px;
-            font-family: 'Material Symbols Rounded'; font-size: 26px;
+            font-weight: 900; font-size: 16px; margin-bottom: 12px; object-fit: cover;
         }
-        .qarrib-role-card h4 { font-size: 15px; font-weight: 800; margin: 0 0 6px 0; color: #2E4B12; }
-        .qarrib-role-card p { font-size: 12.5px; color: #7A7768; margin: 0 0 14px 0; line-height: 1.6; }
-        .qarrib-hero-btn {
-            display: inline-block; background: #FBF8F1; color: #2E4B12 !important;
-            padding: 10px 28px; border-radius: 100px; font-weight: 800; font-size: 14px;
-            margin-top: 18px; text-decoration: none !important;
+        .qarrib-fam-card h5 { font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 13.5px; margin: 0 0 4px 0; color: #2E4B12; }
+        .qarrib-fam-card p { font-size: 11.5px; color: #7A7768; margin: 0; }
+        .qarrib-fam-badge {
+            display: inline-block; margin-top: 12px; background: #EAF3DE; color: #2E4B12;
+            font-size: 10.5px; font-weight: 700; padding: 3px 11px; border-radius: 100px;
         }
-        .qarrib-hero-btn:hover { opacity: 0.9; }
+        .qarrib-fam-card.more {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; background: #FBF8F1; border-style: dashed;
+        }
+
+        .qarrib-signup-panel {
+            background: #2E4B12; border-radius: 24px; padding: 30px 24px; color: #FBF8F1;
+            text-align: center; margin: 10px 0 6px 0;
+        }
+        .qarrib-signup-panel h2 { color: #FBF8F1 !important; font-size: 19px; font-weight: 900; margin: 0 0 8px 0; }
+        .qarrib-signup-panel p { font-size: 12.5px; opacity: 0.88; margin: 0 auto; max-width: 400px; }
+        .st-key-landing_signup_btns button {
+            border-radius: 100px !important; font-weight: 800 !important;
+        }
+
+        .qarrib-footer-tagline {
+            text-align: center; font-size: 11.5px; color: #7A7768; margin: 22px auto 4px auto; max-width: 420px; line-height: 1.7;
+        }
 
         /* شكل رقاقات الفرز (تصنيف المنتج + الترتيب) — نستهدفها فقط عبر
            كلاس "st-key-..." اللي يضيفه Streamlit تلقائياً لأي

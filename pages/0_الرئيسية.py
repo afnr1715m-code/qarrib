@@ -36,49 +36,161 @@ supabase = get_client()
 sellers = supabase.table("sellers").select("*").execute().data
 product_types = sorted({s["product_type"] for s in sellers}) if sellers else []
 
-# صفحة هبوط للزوار الجدد غير المسجلين بس (role is None) — هيرو + قسم "كيف
-# يشتغل قرّب؟" بثلاث بطاقات أدوار، فوق شبكة تصفح الأسر العادية اللي تكمل
-# تحتها. المسجلين دخولهم (أسرة/مندوب/زبون) ما يشوفون هذا القسم — يوصلهم
-# مباشرة لصف الترحيب وتصفح الأسر زي المعتاد
+# صفحة هبوط كاملة للزوار الجدد غير المسجلين بس (role is None) — مبنية على
+# موك-أب مفصّل بعثته المستخدمة (هيرو + بطاقة "رحلة الطلب" + خطوات + بطاقات
+# أدوار + عرض الأسر المسجلة فعلياً + دعوة تسجيل)، فوق شبكة تصفح الأسر
+# العادية اللي تكمل تحتها. المسجلين دخولهم (أسرة/مندوب/زبون) ما يشوفون
+# هذا القسم — يوصلهم مباشرة لصف الترحيب وتصفح الأسر زي المعتاد
 if role is None:
-    st.markdown(
-        f"""
-        <div class="qarrib-hero">
-            <span class="qarrib-hero-badge">{html.escape(t('app_name'))}</span>
-            <h1>{html.escape(t('landing_hero_title'))}</h1>
-            <p>{html.escape(t('landing_hero_subtitle'))}</p>
-            <a class="qarrib-hero-btn" href="#qarrib-browse-anchor">{html.escape(t('landing_hero_cta_browse'))}</a>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    hero_col, route_col = st.columns([1.15, 0.85])
 
-    st.markdown(
-        f'<div class="qarrib-how-title">{html.escape(t("landing_how_title"))}</div>',
-        unsafe_allow_html=True,
-    )
+    with hero_col:
+        st.markdown(
+            f"""
+            <div class="qarrib-hero">
+                <span class="qarrib-eyebrow">{html.escape(t('landing_eyebrow'))}</span>
+                <h1>{html.escape(t('landing_hero_title_line1'))}<br><span class="hl">{html.escape(t('landing_hero_title_highlight'))}</span></h1>
+                <p class="lead">{html.escape(t('landing_hero_subtitle'))}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        hero_btn_col1, hero_btn_col2 = st.columns(2)
+        with hero_btn_col1:
+            st.page_link("pages/7_تسجيل_أسرة.py", label=t("landing_hero_cta_primary"), icon=":material/storefront:", use_container_width=True)
+        with hero_btn_col2:
+            st.markdown(
+                f'<a class="qarrib-hero-btn" href="#qarrib-browse-anchor">{html.escape(t("landing_hero_cta_browse"))}</a>',
+                unsafe_allow_html=True,
+            )
 
-    LANDING_ROLE_CARDS = [
-        ("storefront", "home_register_seller_link", "landing_role_seller_desc", "pages/7_تسجيل_أسرة.py"),
-        ("moped", "home_register_courier_link", "landing_role_courier_desc", "pages/3_تسجيل_مندوب.py"),
-        ("person_add", "home_register_customer_link", "landing_role_customer_desc", "pages/8_تسجيل_زبون.py"),
+    with route_col:
+        kitchen_cp = MATERIAL_ICON_CODEPOINTS["storefront"]
+        home_cp = MATERIAL_ICON_CODEPOINTS["home"]
+        st.markdown(
+            f"""
+            <div class="qarrib-route-card">
+                <span class="title">{html.escape(t('landing_route_title'))}</span>
+                <div class="qarrib-route-path">
+                    <svg class="qarrib-route-svg" viewBox="0 0 300 210" fill="none">
+                        <path d="M 270 30 C 160 30, 110 175, 30 175" stroke="#E8E2D2" stroke-width="3" stroke-dasharray="6 7" stroke-linecap="round"/>
+                    </svg>
+                    <div class="qarrib-route-dot"></div>
+                    <div class="qarrib-route-node kitchen">&#x{kitchen_cp:x};</div>
+                    <span class="qarrib-route-caption kitchen">{html.escape(t('landing_route_kitchen_label'))}</span>
+                    <div class="qarrib-route-node home">&#x{home_cp:x};</div>
+                    <span class="qarrib-route-caption home">{html.escape(t('landing_route_home_label'))}</span>
+                    <span class="qarrib-route-label">{html.escape(t('landing_route_courier_label'))}</span>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    st.markdown('<div style="height:26px"></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="qarrib-how-title">{html.escape(t("landing_how_title"))}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="qarrib-how-subtitle">{html.escape(t("landing_how_subtitle"))}</div>', unsafe_allow_html=True)
+
+    LANDING_STEPS = [
+        ("landing_step1_title", "landing_step1_desc"),
+        ("landing_step2_title", "landing_step2_desc"),
+        ("landing_step3_title", "landing_step3_desc"),
     ]
-    role_cols = st.columns(3)
-    for role_col, (icon_name, title_key, desc_key, target_page) in zip(role_cols, LANDING_ROLE_CARDS):
-        with role_col:
-            codepoint = MATERIAL_ICON_CODEPOINTS[icon_name]
+    step_cols = st.columns(3)
+    for i, (step_col, (title_key, desc_key)) in enumerate(zip(step_cols, LANDING_STEPS), start=1):
+        with step_col:
             st.markdown(
                 f"""
-                <div class="qarrib-role-card">
-                    <div class="qarrib-role-icon">&#x{codepoint:x};</div>
+                <div class="qarrib-step">
+                    <span class="num">{i:02d}</span>
                     <h4>{html.escape(t(title_key))}</h4>
                     <p>{html.escape(t(desc_key))}</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
-            st.page_link(target_page, label=t("btn_register"), icon=f":material/{icon_name}:", use_container_width=True)
 
+    st.markdown('<div style="height:30px"></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="qarrib-how-title">{html.escape(t("landing_audiences_title"))}</div>', unsafe_allow_html=True)
+    st.markdown('<div style="height:18px"></div>', unsafe_allow_html=True)
+
+    LANDING_AUDIENCES = [
+        ("dark", "landing_family_title", "landing_family_desc",
+         ["landing_family_point1", "landing_family_point2", "landing_family_point3"],
+         "landing_family_cta", "pages/7_تسجيل_أسرة.py", "storefront"),
+        ("light", "landing_customer_title", "landing_customer_desc",
+         ["landing_customer_point1", "landing_customer_point2", "landing_customer_point3"],
+         "landing_customer_cta", "pages/8_تسجيل_زبون.py", "person_add"),
+        ("light", "landing_courier_title", "landing_courier_desc",
+         ["landing_courier_point1", "landing_courier_point2", "landing_courier_point3"],
+         "landing_courier_cta", "pages/3_تسجيل_مندوب.py", "moped"),
+    ]
+    aud_cols = st.columns(3)
+    for aud_col, (variant, title_key, desc_key, point_keys, cta_key, target_page, icon_name) in zip(aud_cols, LANDING_AUDIENCES):
+        with aud_col:
+            points_html = "".join(f"<li>{html.escape(t(pk))}</li>" for pk in point_keys)
+            st.markdown(
+                f"""
+                <div class="qarrib-audience-card {variant}">
+                    <h3>{html.escape(t(title_key))}</h3>
+                    <p class="desc">{html.escape(t(desc_key))}</p>
+                    <ul class="qarrib-audience-list">{points_html}</ul>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            st.page_link(target_page, label=t(cta_key), icon=f":material/{icon_name}:", use_container_width=True)
+
+    st.markdown('<div style="height:30px"></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="qarrib-how-title">{html.escape(t("landing_families_title"))}</div>', unsafe_allow_html=True)
+    st.markdown('<div style="height:14px"></div>', unsafe_allow_html=True)
+
+    if not sellers:
+        st.info(t("landing_families_empty"))
+    else:
+        fam_cards_html = ""
+        for seller in sellers[:8]:
+            fam_name = seller["name"].strip() or "؟"
+            if seller.get("logo_url"):
+                thumb_html = f'<img src="{html.escape(seller["logo_url"])}" class="thumb" style="object-fit:cover;" alt="">'
+            else:
+                thumb_html = f'<div class="thumb">{html.escape(fam_name[0])}</div>'
+            fam_cards_html += (
+                '<div class="qarrib-fam-card">'
+                f'{thumb_html}'
+                f'<h5>{html.escape(fam_name)}</h5>'
+                f'<p>{html.escape(category_label(seller["product_type"]))}</p>'
+                f'<span class="qarrib-fam-badge">{html.escape(t("landing_families_badge"))}</span>'
+                '</div>'
+            )
+        fam_cards_html += (
+            '<div class="qarrib-fam-card more">'
+            f'<p style="font-weight:700; color:#2E4B12; margin-bottom:6px;">{html.escape(t("landing_families_more_title"))}</p>'
+            f'<p style="font-size:11.5px; color:#7A7768;">{html.escape(t("landing_families_more_desc"))}</p>'
+            '</div>'
+        )
+        st.markdown(f'<div class="qarrib-fam-scroll">{fam_cards_html}</div>', unsafe_allow_html=True)
+
+    st.markdown('<div style="height:20px"></div>', unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div class="qarrib-signup-panel">
+            <h2>{html.escape(t('landing_signup_title'))}</h2>
+            <p>{html.escape(t('landing_signup_subtitle'))}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    with st.container(key="landing_signup_btns"):
+        signup_col1, signup_col2, signup_col3 = st.columns(3)
+        with signup_col1:
+            st.page_link("pages/7_تسجيل_أسرة.py", label=t("home_register_seller_link"), icon=":material/storefront:", use_container_width=True)
+        with signup_col2:
+            st.page_link("pages/8_تسجيل_زبون.py", label=t("home_register_customer_link"), icon=":material/person_add:", use_container_width=True)
+        with signup_col3:
+            st.page_link("pages/3_تسجيل_مندوب.py", label=t("home_register_courier_link"), icon=":material/moped:", use_container_width=True)
+
+    st.markdown(f'<div class="qarrib-footer-tagline">{html.escape(t("landing_footer_tagline"))}</div>', unsafe_allow_html=True)
     st.divider()
 
 # صف الترحيب ("أهلاً" + سؤال) + أيقونة حساب مضغوطة (popover) يمين —
