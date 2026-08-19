@@ -1,0 +1,7 @@
+streamlit==1.40.1
+supabase==2.6.0
+python-dotenv==1.0.1
+h2==4.1.0
+streamlit-folium==0.22.1
+folium==0.18.0
+streamlit-js-eval==1.0.0
