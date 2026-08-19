@@ -38,33 +38,38 @@ product_types = sorted({s["product_type"] for s in sellers}) if sellers else []
 
 # صف الترحيب ("أهلاً" + سؤال) + أيقونة حساب مضغوطة (popover) يمين —
 # بالضبط ترتيب الموك-أب: تحية شخصية بدل شعار التطبيق، وأيقونة حساب
-# صغيرة بجنبها مو عمود جانبي كامل
-greet_col, account_col = st.columns([5, 1])
-
-with greet_col:
+# صغيرة بجنبها مو عمود جانبي كامل. الزبون ما يحتاج هذي الأيقونة أصلاً —
+# شريط التنقل السفلي عنده فيه تبويب "حسابي" مخصص لنفس الغرض بالضبط، فتكرارها
+# هنا زيادة بلا داعي (render_customer_bottom_nav تحت)
+if role == "customer":
     st.caption(t("home_greeting_hello"))
     st.subheader(t("home_greeting_question"))
-    if role is not None:
-        st.caption(t("home_welcome_role").format(role=role_label(role)))
+    st.caption(t("home_welcome_role").format(role=role_label(role)))
+else:
+    greet_col, account_col = st.columns([5, 1])
 
-with account_col:
-    # بدون تسمية نصية وبدون تمديد العرض — يطلع زر دائري مضغوط فيه
-    # الأيقونة بس، أقرب لشكل أيقونة الحساب الصغيرة بأعلى يمين الموك-أب
-    with st.popover(" ", icon=":material/account_circle:", help=t("home_account_menu")):
-        if role is None:
-            st.page_link("pages/1_تسجيل_الدخول.py", label=t("nav_login"), icon=":material/login:")
-            st.caption(t("home_new_account"))
-            st.page_link("pages/7_تسجيل_أسرة.py", label=t("home_register_seller_link"), icon=":material/storefront:")
-            st.page_link("pages/3_تسجيل_مندوب.py", label=t("home_register_courier_link"), icon=":material/moped:")
-            st.page_link("pages/8_تسجيل_زبون.py", label=t("home_register_customer_link"), icon=":material/person_add:")
-        elif role == "seller":
-            st.page_link("pages/5_طلبات_الأسرة.py", label=t("nav_my_orders"), icon=":material/receipt_long:")
-            st.page_link("pages/10_قائمة_المنتجات.py", label=t("nav_product_menu"), icon=":material/restaurant_menu:")
-            st.page_link("pages/15_إعدادات_الأسرة.py", label=t("nav_settings"), icon=":material/settings:")
-        elif role == "courier":
-            st.page_link("pages/4_لوحة_المندوب.py", label=t("courier_dashboard_title"), icon=":material/local_shipping:")
-        elif role == "customer":
-            st.page_link("pages/11_السلة.py", label=t("nav_cart"), icon=":material/shopping_cart:")
+    with greet_col:
+        st.caption(t("home_greeting_hello"))
+        st.subheader(t("home_greeting_question"))
+        if role is not None:
+            st.caption(t("home_welcome_role").format(role=role_label(role)))
+
+    with account_col:
+        # بدون تسمية نصية وبدون تمديد العرض — يطلع زر دائري مضغوط فيه
+        # الأيقونة بس، أقرب لشكل أيقونة الحساب الصغيرة بأعلى يمين الموك-أب
+        with st.popover(" ", icon=":material/account_circle:", help=t("home_account_menu")):
+            if role is None:
+                st.page_link("pages/1_تسجيل_الدخول.py", label=t("nav_login"), icon=":material/login:")
+                st.caption(t("home_new_account"))
+                st.page_link("pages/7_تسجيل_أسرة.py", label=t("home_register_seller_link"), icon=":material/storefront:")
+                st.page_link("pages/3_تسجيل_مندوب.py", label=t("home_register_courier_link"), icon=":material/moped:")
+                st.page_link("pages/8_تسجيل_زبون.py", label=t("home_register_customer_link"), icon=":material/person_add:")
+            elif role == "seller":
+                st.page_link("pages/5_طلبات_الأسرة.py", label=t("nav_my_orders"), icon=":material/receipt_long:")
+                st.page_link("pages/10_قائمة_المنتجات.py", label=t("nav_product_menu"), icon=":material/restaurant_menu:")
+                st.page_link("pages/15_إعدادات_الأسرة.py", label=t("nav_settings"), icon=":material/settings:")
+            elif role == "courier":
+                st.page_link("pages/4_لوحة_المندوب.py", label=t("courier_dashboard_title"), icon=":material/local_shipping:")
             st.page_link("pages/9_طلبات_الزبون.py", label=t("nav_my_orders"), icon=":material/receipt_long:")
             st.page_link("pages/13_الملف_الشخصي.py", label=t("nav_profile"), icon=":material/person:")
 

@@ -95,16 +95,31 @@ def render_logout_button():
 
 def render_inline_logout_button():
     """
-    نسخة من زر تسجيل الخروج بدون قائمة جانبية — أيقونة مضغوطة بس بأعلى
-    الصفحة نفسها. تُستخدم بصفحات الزبون الأربعة (القائمة الجانبية مخفية
-    عنها كلياً — position="hidden" بـ app.py — فما نقدر نحط الزر بالسايدبار
-    زي باقي الصفحات).
+    نسخة من زر تسجيل الخروج بدون قائمة جانبية — أيقونة صغيرة شفافة (بدون
+    حدود/خلفية زر عادية) بأعلى يمين الصفحة. تُستخدم بصفحات الزبون الأربعة
+    (القائمة الجانبية مخفية عنها كلياً — position="hidden" بـ app.py — فما
+    نقدر نحط الزر بالسايدبار زي باقي الصفحات).
     """
     if is_logged_in():
         from db import get_client
 
+        st.markdown(
+            """
+            <style>
+            .st-key-inline_logout_btn button {
+                background: transparent; border: none; box-shadow: none;
+                color: #7A7768; padding: 2px 4px;
+            }
+            .st-key-inline_logout_btn button:hover {
+                background: transparent; color: #C05A3E;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
         col_spacer, col_btn = st.columns([8, 1])
         with col_btn:
-            if st.button(" ", icon=":material/logout:", key="inline_logout_btn", help=t("btn_logout")):
-                sign_out(get_client())
-                st.rerun()
+            with st.container(key="inline_logout_btn"):
+                if st.button(" ", icon=":material/logout:", key="inline_logout_click", help=t("btn_logout")):
+                    sign_out(get_client())
+                    st.rerun()
