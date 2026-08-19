@@ -70,8 +70,6 @@ else:
                 st.page_link("pages/15_إعدادات_الأسرة.py", label=t("nav_settings"), icon=":material/settings:")
             elif role == "courier":
                 st.page_link("pages/4_لوحة_المندوب.py", label=t("courier_dashboard_title"), icon=":material/local_shipping:")
-            st.page_link("pages/9_طلبات_الزبون.py", label=t("nav_my_orders"), icon=":material/receipt_long:")
-            st.page_link("pages/13_الملف_الشخصي.py", label=t("nav_profile"), icon=":material/person:")
 
 # شريط بحث + رقاقات فرز — يجيان مباشرة تحت الترحية زي الموك-أب، قبل
 # البانر مو بعده
