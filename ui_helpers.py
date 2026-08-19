@@ -427,12 +427,20 @@ def apply_home_theme():
         .qarrib-route-card {
             background: #FFFFFF; border: 1px solid #E8E2D2; border-radius: 22px;
             padding: 22px 20px; box-shadow: 0 16px 36px -16px rgba(46, 75, 18, 0.3);
+            overflow: hidden;
         }
         .qarrib-route-card .title {
             font-family: 'Cairo', sans-serif; font-weight: 800; color: #2E4B12; font-size: 14.5px;
             margin-bottom: 14px; display: block;
         }
-        .qarrib-route-path { position: relative; height: 210px; }
+        /* عرض/ارتفاع ثابتين (300×210) بالضبط نفس viewBox حق السي‌في‌جي —
+           لازم يتطابقوا تمامًا، لأن إحداثيات offset-path حقت النقطة
+           المتحركة تحت (M 270 30 C...) مكتوبة كأرقام بكسل ثابتة، مو نسبية
+           لعرض العنصر. لو الحاوية أعرض من 300px (زي أعمدة Streamlit
+           بالشاشات الكبيرة)، السي‌في‌جي كان يتمدد ليملى العرض بس النقطة
+           تضل تتحرك بنفس الإحداثيات الأصغر — فتطلع النقطة خارج المسار
+           المرسوم بصريًا. تثبيت العرض هنا يخلي الاثنين يتطابقوا دايمًا */
+        .qarrib-route-path { position: relative; width: 300px; height: 210px; margin: 0 auto; max-width: 100%; overflow: hidden; }
         .qarrib-route-svg { position: absolute; inset: 0; }
         .qarrib-route-dot {
             position: absolute; width: 13px; height: 13px; border-radius: 50%;
