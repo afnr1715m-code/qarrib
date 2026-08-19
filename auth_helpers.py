@@ -120,6 +120,6 @@ def render_inline_logout_button():
         col_spacer, col_btn = st.columns([8, 1])
         with col_btn:
             with st.container(key="inline_logout_btn"):
-                if st.button(" ", icon=":material/logout:", key="inline_logout_click", help=t("btn_logout")):
+                if st.button(" ", icon=":material/power_settings_new:", key="inline_logout_click", help=t("btn_logout")):
                     sign_out(get_client())
                     st.rerun()
