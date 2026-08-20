@@ -504,21 +504,48 @@ def apply_home_theme():
         .qarrib-step h4 { font-size: 14.5px; font-weight: 800; margin: 0 0 6px 0; color: #2E4B12; }
         .qarrib-step p { font-size: 12px; color: #7A7768; margin: 0; line-height: 1.65; }
 
-        .qarrib-audience-card {
-            border-radius: 20px; padding: 26px 22px; height: 100%;
+        /* تساوي ارتفاع بطاقات الأدوار الثلاث — شبيه بأسلوب بطاقات الخطوات،
+           بس هنا كل عمود فيه عنصرين (البطاقة + زر التسجيل تحتها)، فنمدد
+           العنصر الأول بس (:first-child، البطاقة) ونخلي الزر بحجمه
+           الطبيعي تحتها بدل ما يتمدد هو الثاني */
+        .st-key-landing_audience_row [data-testid="stColumn"] {
+            display: flex;
         }
-        .qarrib-audience-card.dark { background: #2E4B12; color: #FBF8F1; }
+        .st-key-landing_audience_row [data-testid="stColumn"] > div {
+            display: flex; flex-direction: column; width: 100%;
+        }
+        .st-key-landing_audience_row [data-testid="stVerticalBlock"] {
+            display: flex; flex-direction: column; height: 100%; width: 100%;
+        }
+        .st-key-landing_audience_row [data-testid="stElementContainer"]:first-child {
+            display: flex; flex-direction: column; flex: 1;
+        }
+        .st-key-landing_audience_row [data-testid="stElementContainer"]:first-child [data-testid="stMarkdown"],
+        .st-key-landing_audience_row [data-testid="stElementContainer"]:first-child [data-testid="stMarkdownContainer"] {
+            display: flex; flex-direction: column; flex: 1;
+        }
+        .qarrib-audience-card {
+            border-radius: 20px; padding: 26px 22px; height: 100%; flex: 1;
+        }
+        /* بطاقة الأسرة كانت أخضر غامق صلب — خففناها وأدخلنا البرتقالي
+           (الهوني) بتدرّج دافئ يمزج مع الأخضر والبيج الموجودين أصلاً
+           بباقي التصميم، بدل كتلة خضراء وحيدة غامقة */
+        .qarrib-audience-card.dark {
+            background: linear-gradient(135deg, #EAF3DE, #FBEBD2);
+            border: 1px solid #E8E2D2;
+            color: #2E4B12;
+        }
         .qarrib-audience-card.light { background: #FFFFFF; border: 1px solid #E8E2D2; }
         .qarrib-audience-card h3 { font-size: 17px; font-weight: 800; margin: 0 0 10px 0; }
-        .qarrib-audience-card.dark h3 { color: #FBF8F1 !important; }
+        .qarrib-audience-card.dark h3 { color: #2E4B12 !important; }
         .qarrib-audience-card.light h3 { color: #2E4B12 !important; }
         .qarrib-audience-card .desc { font-size: 12.5px; margin-bottom: 16px; line-height: 1.7; }
-        .qarrib-audience-card.dark .desc { opacity: 0.92; }
+        .qarrib-audience-card.dark .desc { color: #5A5644; }
         .qarrib-audience-card.light .desc { color: #7A7768; }
         .qarrib-audience-list { list-style: none; margin: 0 0 18px 0; padding: 0; }
         .qarrib-audience-list li { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 9px; font-size: 12px; line-height: 1.6; }
         .qarrib-audience-list li::before { content: "✓"; font-weight: 800; flex-shrink: 0; }
-        .qarrib-audience-card.dark .qarrib-audience-list li::before { color: #A9D477; }
+        .qarrib-audience-card.dark .qarrib-audience-list li::before { color: #D9942F; }
         .qarrib-audience-card.light .qarrib-audience-list li::before { color: #D9942F; }
 
         .qarrib-fam-scroll {

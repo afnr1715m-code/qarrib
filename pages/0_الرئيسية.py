@@ -129,21 +129,22 @@ if role is None:
          ["landing_courier_point1", "landing_courier_point2", "landing_courier_point3"],
          "landing_courier_cta", "pages/3_تسجيل_مندوب.py", "moped"),
     ]
-    aud_cols = st.columns(3)
-    for aud_col, (variant, title_key, desc_key, point_keys, cta_key, target_page, icon_name) in zip(aud_cols, LANDING_AUDIENCES):
-        with aud_col:
-            points_html = "".join(f"<li>{html.escape(t(pk))}</li>" for pk in point_keys)
-            st.markdown(
-                f"""
-                <div class="qarrib-audience-card {variant}">
-                    <h3>{html.escape(t(title_key))}</h3>
-                    <p class="desc">{html.escape(t(desc_key))}</p>
-                    <ul class="qarrib-audience-list">{points_html}</ul>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-            st.page_link(target_page, label=t(cta_key), icon=f":material/{icon_name}:", use_container_width=True)
+    with st.container(key="landing_audience_row"):
+        aud_cols = st.columns(3)
+        for aud_col, (variant, title_key, desc_key, point_keys, cta_key, target_page, icon_name) in zip(aud_cols, LANDING_AUDIENCES):
+            with aud_col:
+                points_html = "".join(f"<li>{html.escape(t(pk))}</li>" for pk in point_keys)
+                st.markdown(
+                    f"""
+                    <div class="qarrib-audience-card {variant}">
+                        <h3>{html.escape(t(title_key))}</h3>
+                        <p class="desc">{html.escape(t(desc_key))}</p>
+                        <ul class="qarrib-audience-list">{points_html}</ul>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                st.page_link(target_page, label=t(cta_key), icon=f":material/{icon_name}:", use_container_width=True)
 
     st.markdown('<div style="height:30px"></div>', unsafe_allow_html=True)
     st.markdown(f'<div class="qarrib-how-title">{html.escape(t("landing_families_title"))}</div>', unsafe_allow_html=True)

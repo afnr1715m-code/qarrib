@@ -136,7 +136,7 @@ TRANSLATIONS = {
         "landing_courier_desc": "وصّل طلبات بوقتك اللي يناسبك، وحقق دخل إضافي من حيّك",
         "landing_courier_point1": "تختار أوقات توفرك بنفسك",
         "landing_courier_point2": "توزيع الطلبات تلقائي حسب أقرب موقع لك",
-        "landing_courier_point3": "تسجيل بسيط بدون تعقيد أو مستندات",
+        "landing_courier_point3": "تسجيل بسيط بدون تعقيد",
         "landing_courier_cta": "سجّل كمندوب",
         "landing_families_title": "تعرفي على بعض الأسر",
         "landing_families_empty": "لسا ما فيه أسر مسجلة — كوني أول وحدة!",
