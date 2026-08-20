@@ -527,26 +527,17 @@ def apply_home_theme():
         .qarrib-audience-card {
             border-radius: 20px; padding: 26px 22px; height: 100%; flex: 1;
         }
-        /* بطاقة الأسرة كانت أخضر غامق صلب — خففناها وأدخلنا البرتقالي
-           (الهوني) بتدرّج دافئ يمزج مع الأخضر والبيج الموجودين أصلاً
-           بباقي التصميم، بدل كتلة خضراء وحيدة غامقة */
-        .qarrib-audience-card.dark {
-            background: linear-gradient(135deg, #EAF3DE, #FBEBD2);
-            border: 1px solid #E8E2D2;
-            color: #2E4B12;
+        /* الثلاث بطاقات بنفس اللون بالضبط الحين — أبيض بحد خفيف، بدل ما
+           تكون بطاقة الأسرة مميزة بلون مختلف عن الثانيتين */
+        .qarrib-audience-card.dark,
+        .qarrib-audience-card.light {
+            background: #FFFFFF; border: 1px solid #E8E2D2; color: #2E4B12;
         }
-        .qarrib-audience-card.light { background: #FFFFFF; border: 1px solid #E8E2D2; }
-        .qarrib-audience-card h3 { font-size: 17px; font-weight: 800; margin: 0 0 10px 0; }
-        .qarrib-audience-card.dark h3 { color: #2E4B12 !important; }
-        .qarrib-audience-card.light h3 { color: #2E4B12 !important; }
-        .qarrib-audience-card .desc { font-size: 12.5px; margin-bottom: 16px; line-height: 1.7; }
-        .qarrib-audience-card.dark .desc { color: #5A5644; }
-        .qarrib-audience-card.light .desc { color: #7A7768; }
+        .qarrib-audience-card h3 { font-size: 17px; font-weight: 800; margin: 0 0 10px 0; color: #2E4B12 !important; }
+        .qarrib-audience-card .desc { font-size: 12.5px; margin-bottom: 16px; line-height: 1.7; color: #7A7768; }
         .qarrib-audience-list { list-style: none; margin: 0 0 18px 0; padding: 0; }
         .qarrib-audience-list li { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 9px; font-size: 12px; line-height: 1.6; }
-        .qarrib-audience-list li::before { content: "✓"; font-weight: 800; flex-shrink: 0; }
-        .qarrib-audience-card.dark .qarrib-audience-list li::before { color: #D9942F; }
-        .qarrib-audience-card.light .qarrib-audience-list li::before { color: #D9942F; }
+        .qarrib-audience-list li::before { content: "✓"; font-weight: 800; flex-shrink: 0; color: #D9942F; }
 
         .qarrib-fam-scroll {
             display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 12px 2px;
