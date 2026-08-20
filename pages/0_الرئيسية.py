@@ -99,19 +99,20 @@ if role is None:
         ("landing_step2_title", "landing_step2_desc"),
         ("landing_step3_title", "landing_step3_desc"),
     ]
-    step_cols = st.columns(3)
-    for i, (step_col, (title_key, desc_key)) in enumerate(zip(step_cols, LANDING_STEPS), start=1):
-        with step_col:
-            st.markdown(
-                f"""
-                <div class="qarrib-step">
-                    <span class="num">{i:02d}</span>
-                    <h4>{html.escape(t(title_key))}</h4>
-                    <p>{html.escape(t(desc_key))}</p>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+    with st.container(key="landing_steps_row"):
+        step_cols = st.columns(3)
+        for i, (step_col, (title_key, desc_key)) in enumerate(zip(step_cols, LANDING_STEPS), start=1):
+            with step_col:
+                st.markdown(
+                    f"""
+                    <div class="qarrib-step">
+                        <span class="num">{i:02d}</span>
+                        <h4>{html.escape(t(title_key))}</h4>
+                        <p>{html.escape(t(desc_key))}</p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
 
     st.markdown('<div style="height:30px"></div>', unsafe_allow_html=True)
     st.markdown(f'<div class="qarrib-how-title">{html.escape(t("landing_audiences_title"))}</div>', unsafe_allow_html=True)

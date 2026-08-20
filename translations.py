@@ -112,7 +112,7 @@ TRANSLATIONS = {
         "landing_route_home_label": "باب بيتك",
         "landing_route_courier_label": "توصيل المندوب",
         "landing_how_title": "ثلاث خطوات، وطلبك بالطريق",
-        "landing_how_subtitle": "وانتِ تعرفين متى يوصلك طلبك بالضبط",
+        "landing_how_subtitle": "ما فيه تعقيد ولا انتظار طويل — كل أسرة تحدد وقت تجهيزها بنفسها، وأنت تعرف متى يوصلك طلبك بالضبط",
         "landing_step1_title": "تتصفح وتطلب",
         "landing_step1_desc": "تختار من أصناف الأسر القريبة منك، وترسل طلبك مباشرة من التطبيق",
         "landing_step2_title": "الأسرة تجهّز",

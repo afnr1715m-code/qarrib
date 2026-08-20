@@ -477,9 +477,25 @@ def apply_home_theme():
 
         .qarrib-how-title { text-align: center; font-size: 21px; font-weight: 900; color: #2E4B12; margin: 8px 0 6px 0; }
         .qarrib-how-subtitle { text-align: center; font-size: 13px; color: #7A7768; max-width: 480px; margin: 0 auto 26px auto; line-height: 1.7; }
+
+        /* تساوي ارتفاع بطاقات الخطوات الثلاث — height:100% على .qarrib-step
+           لحاله ما يكفي، لازم كل حاوية Streamlit وسيطة (العمود، ثم
+           stVerticalBlock، ثم stElementContainer/stMarkdown) تكون display:flex
+           بالطول عشان النسبة 100% تنتقل لحد آخر عنصر، وإلا كل بطاقة تاخذ
+           طول محتواها بس (نص أطول = بطاقة أطول) */
+        .st-key-landing_steps_row [data-testid="stColumn"] {
+            display: flex;
+        }
+        .st-key-landing_steps_row [data-testid="stColumn"] > div,
+        .st-key-landing_steps_row [data-testid="stVerticalBlock"],
+        .st-key-landing_steps_row [data-testid="stElementContainer"],
+        .st-key-landing_steps_row [data-testid="stMarkdown"],
+        .st-key-landing_steps_row [data-testid="stMarkdownContainer"] {
+            display: flex; flex-direction: column; flex: 1; width: 100%;
+        }
         .qarrib-step {
             background: #FFFFFF; border: 1px solid #E8E2D2; border-radius: 18px;
-            padding: 22px 18px; height: 100%;
+            padding: 22px 18px; height: 100%; flex: 1;
         }
         .qarrib-step .num {
             font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 30px;
