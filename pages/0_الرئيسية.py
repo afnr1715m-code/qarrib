@@ -300,121 +300,111 @@ if role is not None:
         unsafe_allow_html=True,
     )
 
-if not sellers:
-    st.info(t("home_no_sellers_found"))
-else:
-    # شريط إحصائيات صغير (عدد الأسر + عدد الأنواع) — يملي الفراغ اللي
-    # كان تحت البانر مباشرة ويعطي إحساس إن فيه نشاط فعلي بالتطبيق
-    stat_col1, stat_col2 = st.columns(2)
-    with stat_col1:
-        st.markdown(
-            f"""
-            <div class="qarrib-stat">
-                <span class="qarrib-stat-num">{len(sellers)}</span>
-                <span class="qarrib-stat-label">{html.escape(t('home_browse_sellers'))}</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    with stat_col2:
-        st.markdown(
-            f"""
-            <div class="qarrib-stat">
-                <span class="qarrib-stat-num">{len(product_types)}</span>
-                <span class="qarrib-stat-label">{html.escape(t('home_filter_by_type'))}</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    filtered = sellers
-    if selected_type and selected_type != t("filter_all"):
-        filtered = [s for s in filtered if s["product_type"] == selected_type]
-    if search_query:
-        q = search_query.strip().lower()
-        filtered = [s for s in filtered if q in s["name"].lower() or q in s["product_type"].lower()]
-
-    if sort_by == "newest":
-        filtered = sorted(filtered, key=lambda s: s["created_at"], reverse=True)
-    elif sort_by == "fastest_prep":
-        filtered = sorted(filtered, key=lambda s: s["prep_time_minutes"])
-    elif sort_by == "most_ordered":
-        # نعد عدد الطلبات لكل أسرة من جدول orders — ما فيه عمود جاهز
-        # لهذا، فنجيب seller_id لكل الطلبات ونعدها يدوياً بايثون
-        order_rows = supabase.table("orders").select("seller_id").execute().data
-        order_counts = Counter(row["seller_id"] for row in order_rows)
-        filtered = sorted(filtered, key=lambda s: order_counts.get(s["id"], 0), reverse=True)
-    elif sort_by == "lowest_price":
-        # أرخص سعر منتج لكل أسرة — الأسر اللي ما عندها منتجات بعد تروح
-        # آخر الترتيب (float("inf")) بدل ما تختفي من القائمة
-        product_rows = supabase.table("products").select("seller_id, price").execute().data
-        min_price_by_seller = {}
-        for row in product_rows:
-            sid, price = row["seller_id"], float(row["price"])
-            if sid not in min_price_by_seller or price < min_price_by_seller[sid]:
-                min_price_by_seller[sid] = price
-        filtered = sorted(filtered, key=lambda s: min_price_by_seller.get(s["id"], float("inf")))
-
-    st.markdown(
-        f"""
-        <div class="qarrib-section-head">
-            <span class="qarrib-dot"></span>
-            <span>{html.escape(t('home_browse_sellers'))}</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    if not filtered:
+# شبكة تصفح الأسر الفعلية (إحصائيات + بطاقات قابلة للنقر) — للمسجلين
+# دخولهم بس. الزوار الجدد (role is None) صفحة الهبوط فوق فيها أصلاً معاينة
+# لبعض الأسر الحقيقية (قسم "تعرفي على بعض الأسر") + دعوات تسجيل متكررة،
+# فتكرار نفس المحتوى هنا (بعنوان "تصفحي الأسر المنتجة" ذاته تقريباً) كان
+# يحس بصفحتين متلاصقتين لنفس الشي — خصوصاً إن الزيارة غير المسجلة أصلاً ما
+# تقدر تكمل طلب حقيقي بدون تسجيل دخول (require_login بصفحة السلة)
+if role is not None:
+    if not sellers:
         st.info(t("home_no_sellers_found"))
     else:
-        # شبكة بطاقات بثلاث أعمدة (زي شبكة الأسر بالموك-أب) بدل قائمة
-        # طويلة رأسية — كل بطاقة فيها دائرة حرف أول الاسم + الاسم +
-        # نوع المنتج + شارة وقت التجهيز
-        cols = st.columns(3)
-        for i, seller in enumerate(filtered):
-            with cols[i % 3]:
-                name = seller["name"].strip() or "؟"
-                # الأسر اللي رفعت شعار تعرض صورته بدل دائرة الحرف الأولى
-                if seller.get("logo_url"):
-                    thumb_html = f'<img src="{html.escape(seller["logo_url"])}" class="qarrib-seller-thumb" style="object-fit:cover;" alt="">'
-                else:
-                    thumb_html = f'<div class="qarrib-seller-thumb">{html.escape(name[0])}</div>'
-                st.markdown(
-                    f"""
-                    <div class="qarrib-seller-card">
-                        {thumb_html}
-                        <h4>{html.escape(seller['name'])}</h4>
-                        <p>{html.escape(category_label(seller['product_type']))}</p>
-                        <span class="qarrib-seller-badge">{html.escape(t('home_seller_prep_short').format(prep_time=seller['prep_time_minutes']))}</span>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
-                # زر "تصفحي المنتجات" — يودّي مباشرة لصفحة السلة بهذي الأسرة
-                # محددة، بدل ما تكون هناك قائمة اختيار أسرة بصفحة السلة نفسها
-                if role in (None, "customer") and st.button(
-                    t("home_view_products"), key=f"view_products_{seller['id']}",
-                    icon=":material/storefront:", use_container_width=True,
-                ):
-                    if st.session_state.get("cart_seller_id") != seller["id"]:
-                        st.session_state["cart"] = {}
-                    st.session_state["cart_seller_id"] = seller["id"]
-                    st.switch_page("pages/11_السلة.py")
+        # شريط إحصائيات صغير (عدد الأسر + عدد الأنواع) — يملي الفراغ اللي
+        # كان تحت البانر مباشرة ويعطي إحساس إن فيه نشاط فعلي بالتطبيق
+        stat_col1, stat_col2 = st.columns(2)
+        with stat_col1:
+            st.markdown(
+                f"""
+                <div class="qarrib-stat">
+                    <span class="qarrib-stat-num">{len(sellers)}</span>
+                    <span class="qarrib-stat-label">{html.escape(t('home_browse_sellers'))}</span>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        with stat_col2:
+            st.markdown(
+                f"""
+                <div class="qarrib-stat">
+                    <span class="qarrib-stat-num">{len(product_types)}</span>
+                    <span class="qarrib-stat-label">{html.escape(t('home_filter_by_type'))}</span>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
-# صندوق دعوة لتسجيل أسرة جديدة (زي "عندك مطبخ؟" بالموك-أب) — نعرضه
-# لغير المسجلين دخول بس. صفحة "تسجيل أسرة" مسجّلة بـ st.navigation() بس
-# لما role is None (راجع app.py) — لو عرضنا الرابط لمندوب أو زبون مسجل
-# دخول، الصفحة تكون غير مسجّلة بنفس هذي الدورة وتنكسر بخطأ
-# "Could not find page"
-if role is None:
-    st.markdown(
-        f"""
-        <div class="qarrib-cta">
-            <b>{html.escape(t('home_cta_title'))}</b><br>
-            <span style="font-size:12.5px; color:#7A7768;">{html.escape(t('home_cta_subtitle'))}</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.page_link("pages/7_تسجيل_أسرة.py", label=t("home_cta_button"), icon=":material/storefront:")
+        filtered = sellers
+        if selected_type and selected_type != t("filter_all"):
+            filtered = [s for s in filtered if s["product_type"] == selected_type]
+        if search_query:
+            q = search_query.strip().lower()
+            filtered = [s for s in filtered if q in s["name"].lower() or q in s["product_type"].lower()]
+
+        if sort_by == "newest":
+            filtered = sorted(filtered, key=lambda s: s["created_at"], reverse=True)
+        elif sort_by == "fastest_prep":
+            filtered = sorted(filtered, key=lambda s: s["prep_time_minutes"])
+        elif sort_by == "most_ordered":
+            # نعد عدد الطلبات لكل أسرة من جدول orders — ما فيه عمود جاهز
+            # لهذا، فنجيب seller_id لكل الطلبات ونعدها يدوياً بايثون
+            order_rows = supabase.table("orders").select("seller_id").execute().data
+            order_counts = Counter(row["seller_id"] for row in order_rows)
+            filtered = sorted(filtered, key=lambda s: order_counts.get(s["id"], 0), reverse=True)
+        elif sort_by == "lowest_price":
+            # أرخص سعر منتج لكل أسرة — الأسر اللي ما عندها منتجات بعد تروح
+            # آخر الترتيب (float("inf")) بدل ما تختفي من القائمة
+            product_rows = supabase.table("products").select("seller_id, price").execute().data
+            min_price_by_seller = {}
+            for row in product_rows:
+                sid, price = row["seller_id"], float(row["price"])
+                if sid not in min_price_by_seller or price < min_price_by_seller[sid]:
+                    min_price_by_seller[sid] = price
+            filtered = sorted(filtered, key=lambda s: min_price_by_seller.get(s["id"], float("inf")))
+
+        st.markdown(
+            f"""
+            <div class="qarrib-section-head">
+                <span class="qarrib-dot"></span>
+                <span>{html.escape(t('home_browse_sellers'))}</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        if not filtered:
+            st.info(t("home_no_sellers_found"))
+        else:
+            # شبكة بطاقات بثلاث أعمدة (زي شبكة الأسر بالموك-أب) بدل قائمة
+            # طويلة رأسية — كل بطاقة فيها دائرة حرف أول الاسم + الاسم +
+            # نوع المنتج + شارة وقت التجهيز
+            cols = st.columns(3)
+            for i, seller in enumerate(filtered):
+                with cols[i % 3]:
+                    name = seller["name"].strip() or "؟"
+                    # الأسر اللي رفعت شعار تعرض صورته بدل دائرة الحرف الأولى
+                    if seller.get("logo_url"):
+                        thumb_html = f'<img src="{html.escape(seller["logo_url"])}" class="qarrib-seller-thumb" style="object-fit:cover;" alt="">'
+                    else:
+                        thumb_html = f'<div class="qarrib-seller-thumb">{html.escape(name[0])}</div>'
+                    st.markdown(
+                        f"""
+                        <div class="qarrib-seller-card">
+                            {thumb_html}
+                            <h4>{html.escape(seller['name'])}</h4>
+                            <p>{html.escape(category_label(seller['product_type']))}</p>
+                            <span class="qarrib-seller-badge">{html.escape(t('home_seller_prep_short').format(prep_time=seller['prep_time_minutes']))}</span>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                    # زر "تصفحي المنتجات" — يودّي مباشرة لصفحة السلة بهذي الأسرة
+                    # محددة، بدل ما تكون هناك قائمة اختيار أسرة بصفحة السلة نفسها
+                    if role == "customer" and st.button(
+                        t("home_view_products"), key=f"view_products_{seller['id']}",
+                        icon=":material/storefront:", use_container_width=True,
+                    ):
+                        if st.session_state.get("cart_seller_id") != seller["id"]:
+                            st.session_state["cart"] = {}
+                        st.session_state["cart_seller_id"] = seller["id"]
+                        st.switch_page("pages/11_السلة.py")
