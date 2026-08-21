@@ -55,10 +55,8 @@ if role is None:
             """,
             unsafe_allow_html=True,
         )
-        hero_btn_col1, hero_btn_col2 = st.columns(2)
-        with hero_btn_col1:
+        with st.container(key="landing_hero_ctas"):
             st.page_link("pages/7_تسجيل_أسرة.py", label=t("landing_hero_cta_primary"), icon=":material/storefront:", use_container_width=True)
-        with hero_btn_col2:
             st.markdown(
                 f'<a class="qarrib-hero-btn" href="#qarrib-browse-anchor">{html.escape(t("landing_hero_cta_browse"))}</a>',
                 unsafe_allow_html=True,

@@ -417,12 +417,36 @@ def apply_home_theme():
             font-size: 14px; color: #7A7768; line-height: 1.75; margin-bottom: 6px; max-width: 440px;
         }
         .qarrib-hero-btn {
-            display: inline-block; background: #7CB342; color: #FFFFFF !important;
+            display: block; box-sizing: border-box; width: 100%; text-align: center;
+            background: #7CB342; color: #FFFFFF !important;
             padding: 11px 26px; border-radius: 100px; font-weight: 800; font-size: 13.5px;
-            margin-top: 16px; text-decoration: none !important;
+            margin-top: 10px; text-decoration: none !important;
             box-shadow: 0 5px 0 #2E4B12;
         }
         .qarrib-hero-btn:hover { transform: translateY(-2px); }
+
+        /* زر "سجّلي أسرتك" الأول عبارة عن st.page_link حقيقي (لازم تنقّل
+           فعلي بين الصفحات)، وزر "تصفحي الأسر" الثاني رابط HTML خام
+           (يمرّر لمرساة #qarrib-browse-anchor بنفس الصفحة). نصمم الأول
+           هنا يطابق شكل الثاني بالضبط (نفس اللون/الحجم/الظل) عشان
+           يطلعوا متطابقين ومرصوصين فوق بعض بدل جنب بعض */
+        .st-key-landing_hero_ctas [data-testid="stPageLink-NavLink"] {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            width: 100%; box-sizing: border-box;
+            background: #7CB342 !important;
+            padding: 11px 26px; border-radius: 100px;
+            box-shadow: 0 5px 0 #2E4B12; text-decoration: none !important;
+            margin-bottom: 10px;
+        }
+        .st-key-landing_hero_ctas [data-testid="stPageLink-NavLink"]:hover {
+            transform: translateY(-2px);
+        }
+        .st-key-landing_hero_ctas [data-testid="stPageLink-NavLink"] p {
+            color: #FFFFFF !important; font-weight: 800 !important; font-size: 13.5px !important; margin: 0;
+        }
+        .st-key-landing_hero_ctas [data-testid="stIconMaterial"] {
+            color: #FFFFFF !important;
+        }
 
         .qarrib-route-card {
             background: #FFFFFF; border: 1px solid #E8E2D2; border-radius: 22px;
