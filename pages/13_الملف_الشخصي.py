@@ -89,16 +89,30 @@ st.divider()
 # الأسرة بس)، بس نحفظه من الحين
 st.subheader(t("section_location"))
 st.caption(t("location_hint"))
-picked = render_location_picker(customer.get("latitude"), customer.get("longitude"), key="customer_location_picker")
+# نلف قسم الموقع بحاوية key ثابت ونحدد أقصى ارتفاع لأي iframe جواها
+# (الخريطة أو مكوّن GPS) — بعض المكوّنات الخارجية (streamlit-folium،
+# streamlit-js-eval) أحياناً تحجز ارتفاع افتراضي كبير جداً قبل ما تحسب
+# حجمها الفعلي، وهذا كان يسبب فراغ ضخم غير مبرر بين قسم الموقع وقسم كلمة
+# المرور اللي تحته
+st.markdown(
+    """
+    <style>
+    .st-key-customer_location_section iframe { max-height: 380px !important; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+with st.container(key="customer_location_section"):
+    picked = render_location_picker(customer.get("latitude"), customer.get("longitude"), key="customer_location_picker")
 
-if picked:
-    st.caption(t("location_set_display").format(lat=round(picked[0], 5), lon=round(picked[1], 5)))
-    if st.button(t("btn_save_location"), icon=":material/location_on:"):
-        supabase.table("customers").update({"latitude": picked[0], "longitude": picked[1]}).eq("id", customer["id"]).execute()
-        st.success(t("location_updated_success"))
-        st.rerun()
-else:
-    st.caption(t("location_not_set"))
+    if picked:
+        st.caption(t("location_set_display").format(lat=round(picked[0], 5), lon=round(picked[1], 5)))
+        if st.button(t("btn_save_location"), icon=":material/location_on:"):
+            supabase.table("customers").update({"latitude": picked[0], "longitude": picked[1]}).eq("id", customer["id"]).execute()
+            st.success(t("location_updated_success"))
+            st.rerun()
+    else:
+        st.caption(t("location_not_set"))
 
 st.divider()
 st.subheader(t("section_change_password"))
