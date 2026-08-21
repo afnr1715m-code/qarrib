@@ -551,6 +551,11 @@ def apply_home_theme():
         .st-key-landing_audience_row [data-testid="stElementContainer"]:first-child [data-testid="stMarkdownContainer"] {
             display: flex; flex-direction: column; flex: 1;
         }
+        /* أيقونة + نص زر التسجيل تحت كل بطاقة كانت تطلع محاذية يسار
+           (سلوك Streamlit الافتراضي لـ page_link)، خليناها بالنص تمامًا */
+        .st-key-landing_audience_row [data-testid="stPageLink-NavLink"] {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
         .qarrib-audience-card {
             border-radius: 20px; padding: 26px 22px; height: 100%; flex: 1;
         }
@@ -596,8 +601,17 @@ def apply_home_theme():
         }
         .qarrib-signup-panel h2 { color: #F8F4EC !important; font-size: 19px; font-weight: 900; margin: 0 0 8px 0; }
         .qarrib-signup-panel p { font-size: 12.5px; opacity: 0.88; margin: 0 auto; max-width: 400px; }
-        .st-key-landing_signup_btns button {
-            border-radius: 100px !important; font-weight: 800 !important;
+        /* هذي أزرار page_link مو button عادي — الكلاس القديم اللي كان
+           يستهدف "button" ما كان يشتغل أصلاً (page_link عنصره الأساسي a،
+           مو button)، فكانت تطلع بشكل افتراضي محاذي يسار بدون تنسيق */
+        .st-key-landing_signup_btns [data-testid="stPageLink-NavLink"] {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            border-radius: 100px; font-weight: 800;
+            background: #FFFFFF; border: 1px solid #E8E2D2;
+            padding: 10px 16px;
+        }
+        .st-key-landing_signup_btns [data-testid="stPageLink-NavLink"] p {
+            color: #2F3A25 !important; font-weight: 800 !important; margin: 0;
         }
 
         .qarrib-footer-tagline {
