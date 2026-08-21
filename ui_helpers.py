@@ -23,18 +23,18 @@ from translations import TRANSLATIONS
 # هنا مرة وحدة ونستخدمها بكل مكان (CSS وبايثون) عشان لو غيّرنا لون نغيّره
 # بمكان وحيد.
 PALETTE = {
-    "green_900": "#2E4B12",
-    "green_700": "#5A8F2A",
-    "green_500": "#7CB342",
-    "green_300": "#A9D477",
-    "green_100": "#EAF3DE",
-    "cream": "#FBF8F1",
+    "green_900": "#2F3A25",
+    "green_700": "#6B8A4E",
+    "green_500": "#7A9B5C",
+    "green_300": "#B7C9A0",
+    "green_100": "#EDF1E6",
+    "cream": "#F8F4EC",
     "card": "#FFFFFF",
-    "ink": "#4E4B3B",
-    "muted": "#7A7768",
+    "ink": "#33402B",
+    "muted": "#6B7A5C",
     "line": "#E8E2D2",
-    "honey": "#D9942F",
-    "honey_light": "#FBEBD2",
+    "honey": "#E07B3D",
+    "honey_light": "#FCEBDD",
     "red_light": "#FBE4DE",
     "red": "#C05A3E",
 }
@@ -145,7 +145,7 @@ def render_page_title(icon_name: str, text: str, role=None):
     علة عرض مو مضمونة الحل — الاسم icon_name يضل موجود بالتوقيع لأنه
     غير مستخدم حالياً بس نتركه للمستقبل لو انحلت المشكلة بنسخة أحدث.
     """
-    color = ROLE_TITLE_COLORS.get(role, "#3E4F3B")
+    color = ROLE_TITLE_COLORS.get(role, "#2F3A25")
     st.markdown(
         f"""
         <h1 style="color:{color}; font-weight:900; margin:0 0 4px 0;">
@@ -288,6 +288,9 @@ def apply_rtl():
 
         .stApp {{
             direction: {direction};
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiB2aWV3Qm94PSIwIDAgMzAwIDMwMCI+Cjx0ZXh0IHg9IjMwIiB5PSI0MCIgZm9udC1zaXplPSIzNCIgb3BhY2l0eT0iMC4xNiI+8J+NlTwvdGV4dD48dGV4dCB4PSIxNTAiIHk9IjIwIiBmb250LXNpemU9IjM0IiBvcGFjaXR5PSIwLjE2Ij7wn42UPC90ZXh0Pjx0ZXh0IHg9IjI2MCIgeT0iNzAiIGZvbnQtc2l6ZT0iMzQiIG9wYWNpdHk9IjAuMTYiPvCfpZA8L3RleHQ+PHRleHQgeD0iNjAiIHk9IjE0MCIgZm9udC1zaXplPSIzNCIgb3BhY2l0eT0iMC4xNiI+8J+NqjwvdGV4dD48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZm9udC1zaXplPSIzNCIgb3BhY2l0eT0iMC4xNiI+8J+lpDwvdGV4dD48dGV4dCB4PSIyODAiIHk9IjIwMCIgZm9udC1zaXplPSIzNCIgb3BhY2l0eT0iMC4xNiI+8J+NqTwvdGV4dD48dGV4dCB4PSIyMCIgeT0iMjQwIiBmb250LXNpemU9IjM0IiBvcGFjaXR5PSIwLjE2Ij7wn6WXPC90ZXh0Pjx0ZXh0IHg9IjE0MCIgeT0iMjcwIiBmb250LXNpemU9IjM0IiBvcGFjaXR5PSIwLjE2Ij7wn6eBPC90ZXh0Pgo8L3N2Zz4=");
+            background-repeat: repeat;
+            background-size: 300px 300px;
         }}
         [data-testid="stSidebar"] {{
             direction: {direction};
@@ -324,10 +327,10 @@ def apply_home_theme():
         """
         <style>
         .qarrib-banner {
-            background: linear-gradient(135deg, #7CB342, #2E4B12);
+            background: linear-gradient(135deg, #7A9B5C, #2F3A25);
             border-radius: 20px;
             padding: 26px 26px;
-            color: #FBF8F1;
+            color: #F8F4EC;
             margin-bottom: 22px;
             box-shadow: 0 10px 24px rgba(46, 75, 18, 0.25);
         }
@@ -336,24 +339,24 @@ def apply_home_theme():
 
         .qarrib-stat {
             display: flex; align-items: center; gap: 10px;
-            background: #EAF3DE;
+            background: #EDF1E6;
             border: 1px solid #E8E2D2;
             border-radius: 14px;
             padding: 10px 14px;
             margin-bottom: 18px;
         }
-        .qarrib-stat .qarrib-stat-num { font-size: 18px; font-weight: 900; color: #5A8F2A; }
-        .qarrib-stat .qarrib-stat-label { font-size: 11.5px; color: #7A7768; font-weight: 700; }
+        .qarrib-stat .qarrib-stat-num { font-size: 18px; font-weight: 900; color: #6B8A4E; }
+        .qarrib-stat .qarrib-stat-label { font-size: 11.5px; color: #6B7A5C; font-weight: 700; }
 
         .qarrib-section-head {
             display: flex; align-items: center; gap: 8px;
             margin: 6px 0 14px 0;
         }
         .qarrib-section-head .qarrib-dot {
-            width: 8px; height: 8px; border-radius: 50%; background: #7CB342;
+            width: 8px; height: 8px; border-radius: 50%; background: #7A9B5C;
         }
         .qarrib-section-head span {
-            font-size: 16px; font-weight: 900; color: #4E4B3B;
+            font-size: 16px; font-weight: 900; color: #33402B;
         }
 
         div[data-testid="stHorizontalBlock"] { gap: 14px; }
@@ -374,22 +377,22 @@ def apply_home_theme():
         }
         .qarrib-seller-thumb {
             width: 46px; height: 46px; border-radius: 13px;
-            background: linear-gradient(155deg, #7CB342, #4E7A20);
+            background: linear-gradient(155deg, #7A9B5C, #5C7A42);
             color: #FFFFFF;
             display: flex; align-items: center; justify-content: center;
             font-weight: 900; font-size: 18px;
             margin: 0 auto 10px;
             box-shadow: 0 4px 10px rgba(46, 75, 18, 0.3);
         }
-        .qarrib-seller-card h4 { font-size: 13.5px; font-weight: 700; margin: 0 0 3px 0; color: #4E4B3B; }
-        .qarrib-seller-card p { font-size: 11.5px; margin: 0 0 10px 0; color: #7A7768; }
+        .qarrib-seller-card h4 { font-size: 13.5px; font-weight: 700; margin: 0 0 3px 0; color: #33402B; }
+        .qarrib-seller-card p { font-size: 11.5px; margin: 0 0 10px 0; color: #6B7A5C; }
         .qarrib-seller-badge {
             display: inline-block; font-size: 10.5px; font-weight: 700;
-            color: #5A8F2A; background: #EAF3DE; padding: 3px 12px; border-radius: 100px;
+            color: #6B8A4E; background: #EDF1E6; padding: 3px 12px; border-radius: 100px;
         }
         .qarrib-cta {
-            border: 1.5px dashed #A9D477; border-radius: 16px;
-            background: #EAF3DE;
+            border: 1.5px dashed #B7C9A0; border-radius: 16px;
+            background: #EDF1E6;
             padding: 18px; text-align: center;
             margin-top: 6px;
         }
@@ -401,7 +404,7 @@ def apply_home_theme():
            تبقى موحّدة مع باقي التطبيق */
         .qarrib-eyebrow {
             display: inline-flex; align-items: center; gap: 7px;
-            background: #FBEBD2; color: #8A5A16;
+            background: #FCEBDD; color: #A8551F;
             padding: 6px 15px; border-radius: 100px; font-size: 12.5px; font-weight: 800;
             margin-bottom: 16px;
         }
@@ -409,19 +412,19 @@ def apply_home_theme():
             padding: 8px 0 20px 0;
         }
         .qarrib-hero h1 {
-            font-size: 27px; font-weight: 900; line-height: 1.4; color: #2E4B12 !important;
+            font-size: 27px; font-weight: 900; line-height: 1.4; color: #2F3A25 !important;
             margin: 0 0 14px 0;
         }
-        .qarrib-hero h1 .hl { color: #D9942F; }
+        .qarrib-hero h1 .hl { color: #E07B3D; }
         .qarrib-hero .lead {
-            font-size: 14px; color: #7A7768; line-height: 1.75; margin-bottom: 6px; max-width: 440px;
+            font-size: 14px; color: #6B7A5C; line-height: 1.75; margin-bottom: 6px; max-width: 440px;
         }
         .qarrib-hero-btn {
             display: block; box-sizing: border-box; width: 100%; text-align: center;
-            background: #7CB342; color: #FFFFFF !important;
+            background: #7A9B5C; color: #FFFFFF !important;
             padding: 11px 26px; border-radius: 100px; font-weight: 800; font-size: 13.5px;
             margin-top: 10px; text-decoration: none !important;
-            box-shadow: 0 5px 0 #2E4B12;
+            box-shadow: 0 5px 0 #2F3A25;
         }
         .qarrib-hero-btn:hover { transform: translateY(-2px); }
 
@@ -433,9 +436,9 @@ def apply_home_theme():
         .st-key-landing_hero_ctas [data-testid="stPageLink-NavLink"] {
             display: flex; align-items: center; justify-content: center; gap: 6px;
             width: 100%; box-sizing: border-box;
-            background: #7CB342 !important;
+            background: #7A9B5C !important;
             padding: 11px 26px; border-radius: 100px;
-            box-shadow: 0 5px 0 #2E4B12; text-decoration: none !important;
+            box-shadow: 0 5px 0 #2F3A25; text-decoration: none !important;
             margin-bottom: 10px;
         }
         .st-key-landing_hero_ctas [data-testid="stPageLink-NavLink"]:hover {
@@ -454,7 +457,7 @@ def apply_home_theme():
             overflow: hidden;
         }
         .qarrib-route-card .title {
-            font-family: 'Cairo', sans-serif; font-weight: 800; color: #2E4B12; font-size: 14.5px;
+            font-family: 'Cairo', sans-serif; font-weight: 800; color: #2F3A25; font-size: 14.5px;
             margin-bottom: 14px; display: block;
         }
         /* عرض/ارتفاع ثابتين (300×210) بالضبط نفس viewBox حق السي‌في‌جي —
@@ -468,7 +471,7 @@ def apply_home_theme():
         .qarrib-route-svg { position: absolute; inset: 0; }
         .qarrib-route-dot {
             position: absolute; width: 13px; height: 13px; border-radius: 50%;
-            background: #D9942F; box-shadow: 0 0 0 5px #FBEBD2;
+            background: #E07B3D; box-shadow: 0 0 0 5px #FCEBDD;
             offset-path: path('M 270 30 C 160 30, 110 175, 30 175');
             animation: qarrib-travel 3.2s linear infinite;
         }
@@ -484,23 +487,23 @@ def apply_home_theme():
         .qarrib-route-card .qarrib-route-node {
             position: absolute; width: 56px; height: 56px; border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Material Symbols Rounded' !important; font-size: 24px; color: #2E4B12;
+            font-family: 'Material Symbols Rounded' !important; font-size: 24px; color: #2F3A25;
         }
-        .qarrib-route-node.kitchen { top: 0; right: 0; background: #EAF3DE; }
-        .qarrib-route-node.home { bottom: 0; left: 0; background: #FBEBD2; }
+        .qarrib-route-node.kitchen { top: 0; right: 0; background: #EDF1E6; }
+        .qarrib-route-node.home { bottom: 0; left: 0; background: #FCEBDD; }
         .qarrib-route-caption {
-            position: absolute; font-size: 11px; font-weight: 700; color: #7A7768; white-space: nowrap;
+            position: absolute; font-size: 11px; font-weight: 700; color: #6B7A5C; white-space: nowrap;
         }
         .qarrib-route-caption.kitchen { top: 62px; right: 0; }
         .qarrib-route-caption.home { bottom: 62px; left: 0; }
         .qarrib-route-label {
             position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%);
-            background: #FBF8F1; border: 1px solid #E8E2D2; border-radius: 100px;
-            padding: 5px 14px; font-size: 11px; font-weight: 800; color: #2E4B12; white-space: nowrap;
+            background: #F8F4EC; border: 1px solid #E8E2D2; border-radius: 100px;
+            padding: 5px 14px; font-size: 11px; font-weight: 800; color: #2F3A25; white-space: nowrap;
         }
 
-        .qarrib-how-title { text-align: center; font-size: 21px; font-weight: 900; color: #2E4B12; margin: 8px 0 6px 0; }
-        .qarrib-how-subtitle { text-align: center; font-size: 13px; color: #7A7768; max-width: 480px; margin: 0 auto 26px auto; line-height: 1.7; }
+        .qarrib-how-title { text-align: center; font-size: 21px; font-weight: 900; color: #2F3A25; margin: 8px 0 6px 0; }
+        .qarrib-how-subtitle { text-align: center; font-size: 13px; color: #6B7A5C; max-width: 480px; margin: 0 auto 26px auto; line-height: 1.7; }
 
         /* تساوي ارتفاع بطاقات الخطوات الثلاث — height:100% على .qarrib-step
            لحاله ما يكفي، لازم كل حاوية Streamlit وسيطة (العمود، ثم
@@ -523,10 +526,10 @@ def apply_home_theme():
         }
         .qarrib-step .num {
             font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 30px;
-            color: #EAF3DE; -webkit-text-stroke: 1.3px #7CB342; display: block; margin-bottom: 10px;
+            color: #EDF1E6; -webkit-text-stroke: 1.3px #7A9B5C; display: block; margin-bottom: 10px;
         }
-        .qarrib-step h4 { font-size: 14.5px; font-weight: 800; margin: 0 0 6px 0; color: #2E4B12; }
-        .qarrib-step p { font-size: 12px; color: #7A7768; margin: 0; line-height: 1.65; }
+        .qarrib-step h4 { font-size: 14.5px; font-weight: 800; margin: 0 0 6px 0; color: #2F3A25; }
+        .qarrib-step p { font-size: 12px; color: #6B7A5C; margin: 0; line-height: 1.65; }
 
         /* تساوي ارتفاع بطاقات الأدوار الثلاث — شبيه بأسلوب بطاقات الخطوات،
            بس هنا كل عمود فيه عنصرين (البطاقة + زر التسجيل تحتها)، فنمدد
@@ -555,13 +558,13 @@ def apply_home_theme():
            تكون بطاقة الأسرة مميزة بلون مختلف عن الثانيتين */
         .qarrib-audience-card.dark,
         .qarrib-audience-card.light {
-            background: #FFFFFF; border: 1px solid #E8E2D2; color: #2E4B12;
+            background: #FFFFFF; border: 1px solid #E8E2D2; color: #2F3A25;
         }
-        .qarrib-audience-card h3 { font-size: 17px; font-weight: 800; margin: 0 0 10px 0; color: #2E4B12 !important; }
-        .qarrib-audience-card .desc { font-size: 12.5px; margin-bottom: 16px; line-height: 1.7; color: #7A7768; }
+        .qarrib-audience-card h3 { font-size: 17px; font-weight: 800; margin: 0 0 10px 0; color: #2F3A25 !important; }
+        .qarrib-audience-card .desc { font-size: 12.5px; margin-bottom: 16px; line-height: 1.7; color: #6B7A5C; }
         .qarrib-audience-list { list-style: none; margin: 0 0 18px 0; padding: 0; }
         .qarrib-audience-list li { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 9px; font-size: 12px; line-height: 1.6; }
-        .qarrib-audience-list li::before { content: "✓"; font-weight: 800; flex-shrink: 0; color: #D9942F; }
+        .qarrib-audience-list li::before { content: "✓"; font-weight: 800; flex-shrink: 0; color: #E07B3D; }
 
         .qarrib-fam-scroll {
             display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 12px 2px;
@@ -572,33 +575,33 @@ def apply_home_theme():
         }
         .qarrib-fam-card .thumb {
             width: 42px; height: 42px; border-radius: 12px;
-            background: linear-gradient(155deg, #7CB342, #4E7A20); color: #FFFFFF;
+            background: linear-gradient(155deg, #7A9B5C, #5C7A42); color: #FFFFFF;
             display: flex; align-items: center; justify-content: center;
             font-weight: 900; font-size: 16px; margin-bottom: 12px; object-fit: cover;
         }
-        .qarrib-fam-card h5 { font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 13.5px; margin: 0 0 4px 0; color: #2E4B12; }
-        .qarrib-fam-card p { font-size: 11.5px; color: #7A7768; margin: 0; }
+        .qarrib-fam-card h5 { font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 13.5px; margin: 0 0 4px 0; color: #2F3A25; }
+        .qarrib-fam-card p { font-size: 11.5px; color: #6B7A5C; margin: 0; }
         .qarrib-fam-badge {
-            display: inline-block; margin-top: 12px; background: #EAF3DE; color: #2E4B12;
+            display: inline-block; margin-top: 12px; background: #EDF1E6; color: #2F3A25;
             font-size: 10.5px; font-weight: 700; padding: 3px 11px; border-radius: 100px;
         }
         .qarrib-fam-card.more {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; background: #FBF8F1; border-style: dashed;
+            text-align: center; background: #F8F4EC; border-style: dashed;
         }
 
         .qarrib-signup-panel {
-            background: #2E4B12; border-radius: 24px; padding: 30px 24px; color: #FBF8F1;
+            background: #2F3A25; border-radius: 24px; padding: 30px 24px; color: #F8F4EC;
             text-align: center; margin: 10px 0 6px 0;
         }
-        .qarrib-signup-panel h2 { color: #FBF8F1 !important; font-size: 19px; font-weight: 900; margin: 0 0 8px 0; }
+        .qarrib-signup-panel h2 { color: #F8F4EC !important; font-size: 19px; font-weight: 900; margin: 0 0 8px 0; }
         .qarrib-signup-panel p { font-size: 12.5px; opacity: 0.88; margin: 0 auto; max-width: 400px; }
         .st-key-landing_signup_btns button {
             border-radius: 100px !important; font-weight: 800 !important;
         }
 
         .qarrib-footer-tagline {
-            text-align: center; font-size: 11.5px; color: #7A7768; margin: 22px auto 4px auto; max-width: 420px; line-height: 1.7;
+            text-align: center; font-size: 11.5px; color: #6B7A5C; margin: 22px auto 4px auto; max-width: 420px; line-height: 1.7;
         }
 
         /* شكل رقاقات الفرز (تصنيف المنتج + الترتيب) — نستهدفها فقط عبر
@@ -611,9 +614,9 @@ def apply_home_theme():
             border-radius: 999px !important;
             font-weight: 700 !important;
             padding: 7px 20px !important;
-            background: #EAF3DE !important;
+            background: #EDF1E6 !important;
             border: 1.5px solid #E8E2D2 !important;
-            color: #5A8F2A !important;
+            color: #6B8A4E !important;
             box-shadow: none !important;
             transition: transform 0.12s ease, box-shadow 0.12s ease !important;
         }
@@ -627,9 +630,9 @@ def apply_home_theme():
            على أي عنصر (بدون أي ضرر) */
         .st-key-home_category_chips button[aria-selected="true"],
         .st-key-home_sort_chips button[aria-selected="true"] {
-            background: #7CB342 !important;
-            border-color: #7CB342 !important;
-            color: #FBF8F1 !important;
+            background: #7A9B5C !important;
+            border-color: #7A9B5C !important;
+            color: #F8F4EC !important;
             animation: qarrib-chip-pulse 2.2s ease-in-out infinite !important;
         }
         /* نبضة خفيفة مستمرة حوالين الرقاقة المختارة — حركة بسيطة لطيفة
@@ -674,7 +677,7 @@ def apply_orders_theme():
         .qarrib-oc-stage {
             font-size: 11.5px; font-weight: 700; padding: 5px 12px; border-radius: 999px;
         }
-        .qarrib-oc-stage.pending { background: var(--honey-light); color: #9A5F14; }
+        .qarrib-oc-stage.pending { background: var(--honey-light); color: #A8551F; }
         .qarrib-oc-stage.ready { background: var(--green-100); color: var(--green-700); }
         .qarrib-oc-stage.delivered { background: #DCEBEF; color: #2E6B7A; }
         .qarrib-oc-id {
