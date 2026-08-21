@@ -449,6 +449,8 @@ def apply_home_theme():
         }
         .st-key-landing_hero_ctas [data-testid="stIconMaterial"] {
             color: #FFFFFF !important;
+            font-size: 16px !important;
+            display: flex; align-items: center;
         }
 
         .qarrib-route-card {
