@@ -207,9 +207,18 @@ sort_by = "default"
 
 if role is not None:
     if role == "customer":
-        st.caption(t("home_greeting_hello"))
-        st.subheader(t("home_greeting_question"))
-        st.caption(t("home_welcome_role").format(role=role_label(role)))
+        # صف الأعلى: ترحيب بمساحة أكبر يمين + أيقونة سلة مضغوطة يسار
+        # (نفس ترتيب "أهلاً + حساب" المستخدم لباقي الأدوار تحت، بس هنا
+        # سلة بدل قائمة حساب)
+        cart_items = sum(st.session_state.get("cart", {}).values())
+        greet_col, cart_col = st.columns([5, 1])
+        with greet_col:
+            st.caption(t("home_greeting_hello"))
+            st.subheader(t("home_greeting_question"))
+            st.caption(t("home_welcome_role").format(role=role_label(role)))
+        with cart_col:
+            st.markdown('<div class="qarrib-cart-badge">🛒</div>', unsafe_allow_html=True)
+            st.caption(f"{cart_items} · {t('nav_cart')}")
     else:
         greet_col, account_col = st.columns([5, 1])
 
@@ -266,6 +275,21 @@ if role is not None and sellers:
             chip_options,
             default=t("filter_all"),
             format_func=lambda opt: f":material/apps: {opt}" if opt == t("filter_all") else f":material/{CATEGORY_ICON.get(opt, 'restaurant')}: {category_label(opt)}",
+        )
+
+    # خانة عروض ترويجية زخرفية — للزبون بس (طلبها بالتحديد لصفحته)
+    if role == "customer":
+        st.markdown(
+            f"""
+            <div class="qarrib-offers-banner">
+                <span class="emoji">🎉</span>
+                <div>
+                    <h4>{html.escape(t('home_offers_title'))}</h4>
+                    <p>{html.escape(t('home_offers_subtitle'))}</p>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
     # خيارات الترتيب — الأربعة اللي ممكنة بالبيانات الموجودة حالياً

@@ -657,6 +657,58 @@ def apply_home_theme():
             0%, 100% { box-shadow: 0 0 0 0 rgba(124, 179, 66, 0.45); }
             50% { box-shadow: 0 0 0 7px rgba(124, 179, 66, 0); }
         }
+
+        /* رقاقات فرز الأصناف تحديداً (مو رقاقات الترتيب) — نحولها لشكل
+           بلاطة (أيقونة فوق النص) بدل أيقونة+نص بصف واحد، وبلون برتقالي
+           دافئ بدل الأخضر، زي مربعات التصنيفات بموك-أب المستخدمة */
+        .st-key-home_category_chips [data-testid="stButtonGroup"] {
+            flex-wrap: wrap; gap: 12px !important;
+        }
+        .st-key-home_category_chips button {
+            flex-direction: column !important;
+            height: auto !important;
+            min-width: 68px;
+            padding: 12px 10px !important;
+            gap: 6px !important;
+            border-radius: 18px !important;
+            background: #FDF0E4 !important;
+            border: 1.5px solid #F3DCC4 !important;
+            color: #A8551F !important;
+        }
+        .st-key-home_category_chips [data-testid="stIconMaterial"] {
+            font-size: 26px !important;
+            color: #E07B3D !important;
+        }
+        .st-key-home_category_chips [data-testid="stMarkdownContainer"] p {
+            font-size: 11px !important; margin: 0 !important; font-weight: 700 !important;
+        }
+        .st-key-home_category_chips button[aria-selected="true"] {
+            background: #E07B3D !important;
+            border-color: #E07B3D !important;
+            color: #FFFFFF !important;
+        }
+        .st-key-home_category_chips button[aria-selected="true"] [data-testid="stIconMaterial"] {
+            color: #FFFFFF !important;
+        }
+
+        /* خانة العروض — بانر ترويجي زخرفي بلون برتقالي بارز */
+        .qarrib-offers-banner {
+            background: linear-gradient(120deg, #E07B3D, #F0A868);
+            border-radius: 20px; padding: 18px 20px; color: #FFFFFF;
+            margin: 16px 0; display: flex; align-items: center; gap: 14px;
+            box-shadow: 0 10px 24px rgba(224, 123, 61, 0.3);
+        }
+        .qarrib-offers-banner .emoji { font-size: 30px; line-height: 1; }
+        .qarrib-offers-banner h4 { color: #FFFFFF !important; font-size: 15px; font-weight: 900; margin: 0 0 3px 0; }
+        .qarrib-offers-banner p { margin: 0; font-size: 12px; opacity: 0.95; }
+
+        /* صف الأعلى للزبون (سلة + ترحيب) */
+        .qarrib-cart-badge {
+            display: flex; align-items: center; justify-content: center;
+            width: 42px; height: 42px; border-radius: 14px;
+            background: #FDF0E4; border: 1px solid #F3DCC4;
+            font-size: 20px;
+        }
         </style>
         """,
         unsafe_allow_html=True,
