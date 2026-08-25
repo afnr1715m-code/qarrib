@@ -315,12 +315,12 @@ def apply_home_theme():
         """
         <style>
         .qarrib-banner {
-            background: linear-gradient(120deg, #E07B3D, #F0A868);
+            background: linear-gradient(120deg, #7A9B5C, #E3A46E);
             border-radius: 20px;
             padding: 26px 26px;
             color: #FFFFFF;
             margin-bottom: 22px;
-            box-shadow: 0 10px 24px rgba(224, 123, 61, 0.3);
+            box-shadow: 0 10px 24px rgba(122, 155, 92, 0.28);
         }
         .qarrib-banner h3 { margin: 0 0 6px 0; font-size: 20px; font-weight: 900; }
         .qarrib-banner p { margin: 0; font-size: 13.5px; opacity: 0.95; }
@@ -685,12 +685,13 @@ def apply_home_theme():
             color: #FFFFFF !important;
         }
 
-        /* خانة العروض — بانر ترويجي زخرفي بلون برتقالي بارز */
+        /* خانة العروض — متدرّج أخضر لبرتقالي خفيف بدل برتقالي صريح، عشان
+           يضل متناسق مع باقي التطبيق الأخضر أساساً */
         .qarrib-offers-banner {
-            background: linear-gradient(120deg, #E07B3D, #F0A868);
+            background: linear-gradient(120deg, #7A9B5C, #E3A46E);
             border-radius: 20px; padding: 18px 20px; color: #FFFFFF;
             margin: 16px 0; display: flex; align-items: center; gap: 14px;
-            box-shadow: 0 10px 24px rgba(224, 123, 61, 0.3);
+            box-shadow: 0 10px 24px rgba(122, 155, 92, 0.28);
         }
         .qarrib-offers-banner .emoji { font-size: 30px; line-height: 1; }
         .qarrib-offers-banner h4 { color: #FFFFFF !important; font-size: 15px; font-weight: 900; margin: 0 0 3px 0; }
