@@ -661,10 +661,12 @@ def apply_home_theme():
         /* رقاقات فرز الأصناف تحديداً (مو رقاقات الترتيب) — نحولها لشكل
            بلاطة (أيقونة فوق النص) بدل أيقونة+نص بصف واحد، وبلون برتقالي
            دافئ بدل الأخضر، زي مربعات التصنيفات بموك-أب المستخدمة */
-        .st-key-home_category_chips [data-testid="stButtonGroup"] {
+        .st-key-home_category_chips [data-testid="stButtonGroup"],
+        .st-key-home_sort_chips [data-testid="stButtonGroup"] {
             flex-wrap: wrap; gap: 12px !important;
         }
-        .st-key-home_category_chips button {
+        .st-key-home_category_chips button,
+        .st-key-home_sort_chips button {
             flex-direction: column !important;
             height: auto !important;
             min-width: 68px;
@@ -675,19 +677,23 @@ def apply_home_theme():
             border: 1.5px solid #F3DCC4 !important;
             color: #A8551F !important;
         }
-        .st-key-home_category_chips [data-testid="stIconMaterial"] {
+        .st-key-home_category_chips [data-testid="stIconMaterial"],
+        .st-key-home_sort_chips [data-testid="stIconMaterial"] {
             font-size: 26px !important;
             color: #E07B3D !important;
         }
-        .st-key-home_category_chips [data-testid="stMarkdownContainer"] p {
+        .st-key-home_category_chips [data-testid="stMarkdownContainer"] p,
+        .st-key-home_sort_chips [data-testid="stMarkdownContainer"] p {
             font-size: 11px !important; margin: 0 !important; font-weight: 700 !important;
         }
-        .st-key-home_category_chips button[aria-selected="true"] {
+        .st-key-home_category_chips button[aria-selected="true"],
+        .st-key-home_sort_chips button[aria-selected="true"] {
             background: #E07B3D !important;
             border-color: #E07B3D !important;
             color: #FFFFFF !important;
         }
-        .st-key-home_category_chips button[aria-selected="true"] [data-testid="stIconMaterial"] {
+        .st-key-home_category_chips button[aria-selected="true"] [data-testid="stIconMaterial"],
+        .st-key-home_sort_chips button[aria-selected="true"] [data-testid="stIconMaterial"] {
             color: #FFFFFF !important;
         }
 
