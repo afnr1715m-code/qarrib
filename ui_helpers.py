@@ -327,12 +327,12 @@ def apply_home_theme():
         """
         <style>
         .qarrib-banner {
-            background: linear-gradient(135deg, #7A9B5C, #2F3A25);
+            background: linear-gradient(120deg, #E07B3D, #F0A868);
             border-radius: 20px;
             padding: 26px 26px;
-            color: #F8F4EC;
+            color: #FFFFFF;
             margin-bottom: 22px;
-            box-shadow: 0 10px 24px rgba(46, 75, 18, 0.25);
+            box-shadow: 0 10px 24px rgba(224, 123, 61, 0.3);
         }
         .qarrib-banner h3 { margin: 0 0 6px 0; font-size: 20px; font-weight: 900; }
         .qarrib-banner p { margin: 0; font-size: 13.5px; opacity: 0.95; }
