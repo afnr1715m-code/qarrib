@@ -169,20 +169,15 @@ CUSTOMER_BOTTOM_NAV_ITEMS = [
     ("profile", "pages/13_الملف_الشخصي.py", "nav_profile", "account_circle"),
 ]
 
-# العنصر النشط نعرضه كنص/HTML خام (مو st.page_link) عشان نلوّنه بلون واضح
-# ثابت — بس رمز Material Symbols كـ Unicode codepoint بمحتوى HTML خام غير
-# موثوق العرض (نفس العلة اللي واجهناها بعناوين الصفحات، تطلع مربعات فاضية)،
-# فنستخدم إيموجي بسيطة بدلها هنا بس (العناصر غير النشطة تستمر تستخدم
-# icon= الرسمية بـ st.page_link اللي مضمونة الشغل)
-_BOTTOM_NAV_ACTIVE_EMOJI = {
-    "home": "🏠",
-    "receipt_long": "🧾",
-    "shopping_cart": "🛒",
-    "account_circle": "👤",
-}
-
-
 def render_customer_bottom_nav(active: str):
+    """
+    العنصر النشط الحين st.page_link حقيقي زي باقي العناصر بالضبط (نفس
+    أيقونة Material الرسمية عبر icon=) — بس ملفوف بحاوية key خاص
+    (bottom_nav_active_item) نلوّنها CSS لتمييزها. جربنا قبل عرض الأيقونة
+    النشطة كنص/HTML خام (Unicode codepoint، وبعدها إيموجي) عشان نتحكم
+    بلونها بحرية، بس هذا كان يكسر تناسق شكل الأيقونة مع باقي التطبيق —
+    الحل الأوثق: أيقونة رسمية للكل، ولون مميز للنشط بس عبر CSS.
+    """
     st.markdown(
         f"""
         <style>
@@ -202,15 +197,14 @@ def render_customer_bottom_nav(active: str):
         .st-key-customer_bottom_nav [data-testid="stIconMaterial"] {{
             color: {PALETTE["muted"]} !important;
         }}
-        .qarrib-bottom-nav-active {{
-            display: flex; flex-direction: column; align-items: center; gap: 2px;
-            padding: 4px 0; color: {PALETTE["green_700"]};
+        .st-key-bottom_nav_active_item [data-testid="stPageLink-NavLink"] {{
+            background: #FDF0E4 !important;
         }}
-        .qarrib-bottom-nav-active .qarrib-bn-icon {{
-            font-size: 20px; line-height: 1;
+        .st-key-bottom_nav_active_item [data-testid="stPageLink-NavLink"] p {{
+            color: #E07B3D !important; font-weight: 800 !important;
         }}
-        .qarrib-bottom-nav-active .qarrib-bn-label {{
-            font-size: 11px; font-weight: 700;
+        .st-key-bottom_nav_active_item [data-testid="stIconMaterial"] {{
+            color: #E07B3D !important;
         }}
         div[data-testid="stAppViewContainer"] .block-container {{
             padding-bottom: 76px;
@@ -224,14 +218,8 @@ def render_customer_bottom_nav(active: str):
         for col, (key, path, label_key, icon_name) in zip(cols, CUSTOMER_BOTTOM_NAV_ITEMS):
             with col:
                 if key == active:
-                    emoji = _BOTTOM_NAV_ACTIVE_EMOJI[icon_name]
-                    st.markdown(
-                        f'<div class="qarrib-bottom-nav-active">'
-                        f'<span class="qarrib-bn-icon">{emoji}</span>'
-                        f'<span class="qarrib-bn-label">{html.escape(t(label_key))}</span>'
-                        f'</div>',
-                        unsafe_allow_html=True,
-                    )
+                    with st.container(key="bottom_nav_active_item"):
+                        st.page_link(path, label=t(label_key), icon=f":material/{icon_name}:")
                 else:
                     st.page_link(path, label=t(label_key), icon=f":material/{icon_name}:")
 
@@ -708,12 +696,19 @@ def apply_home_theme():
         .qarrib-offers-banner h4 { color: #FFFFFF !important; font-size: 15px; font-weight: 900; margin: 0 0 3px 0; }
         .qarrib-offers-banner p { margin: 0; font-size: 12px; opacity: 0.95; }
 
-        /* صف الأعلى للزبون (سلة + ترحيب) */
-        .qarrib-cart-badge {
+        /* أيقونة السلة بأعلى الصفحة الرئيسية للزبون — st.page_link حقيقي
+           (بدل إيموجي خام كانت غير واضحة) بخلفية بلاطة برتقالية فاتحة */
+        .st-key-home_cart_badge [data-testid="stPageLink-NavLink"] {
             display: flex; align-items: center; justify-content: center;
             width: 42px; height: 42px; border-radius: 14px;
-            background: #FDF0E4; border: 1px solid #F3DCC4;
-            font-size: 20px;
+            background: #FDF0E4 !important; border: 1px solid #F3DCC4;
+            padding: 0;
+        }
+        .st-key-home_cart_badge [data-testid="stIconMaterial"] {
+            color: #E07B3D !important; font-size: 22px !important;
+        }
+        .st-key-home_cart_badge [data-testid="stMarkdownContainer"] {
+            display: none;
         }
         </style>
         """,

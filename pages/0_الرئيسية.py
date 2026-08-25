@@ -217,7 +217,8 @@ if role is not None:
             st.subheader(t("home_greeting_question"))
             st.caption(t("home_welcome_role").format(role=role_label(role)))
         with cart_col:
-            st.markdown('<div class="qarrib-cart-badge">🛒</div>', unsafe_allow_html=True)
+            with st.container(key="home_cart_badge"):
+                st.page_link("pages/11_السلة.py", label=" ", icon=":material/shopping_cart:")
             st.caption(f"{cart_items} · {t('nav_cart')}")
     else:
         greet_col, account_col = st.columns([5, 1])
